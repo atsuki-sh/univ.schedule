@@ -17,8 +17,10 @@ class User extends Authenticatable
      * @var array
      */
 
-    public function courses() {
-        return $this->hasMany('App\Courses');
+    // コースを取得
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
     }
 
     protected $fillable = [

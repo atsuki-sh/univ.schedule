@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/schedule.css') }}">
-    <script src="{{ asset('js/schedule.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body>
 
@@ -41,6 +42,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+{{--                ボタン類--}}
                 <button type="button" class="btn btn-danger" id="btn-delete">削除</button>
                 <button type="button" class="btn btn-light" id="btn-close" data-dismiss="modal">閉じる</button>
                 <button type="button" class="btn btn-light" id="btn-cancel">キャンセル</button>
@@ -54,12 +56,14 @@
 
 <nav class="navbar navbar-light bg-light">
     <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
+    <a href="{{ route('home') }}">ホームへ戻る</a>
 </nav>
 
 <div class="page-menu">
     <a id="sch" href="#">スケジュール</a>
     <a id="task" href="#">タスク一覧</a>
     <h4>こんにちは！{{ $user->name }}さん</h4>
+    <h4>あなたのIDは{{ $user->id }}です</h4>
     <i class="fas fa-cog fa-2x"></i>
 </div>
 
@@ -76,7 +80,7 @@
     </tr>
     </thead>
     <tbody>
-    {{--    それぞれのtdはid属性としてindex_xをもつ--}}
+    {{--    それぞれのtdはid属性として番号をもつ--}}
     @for($i=1; $i<=25; $i+=5)
         <tr>
             <th scope="row">{{ ($i-1) / 5 + 1}}</th>
@@ -92,8 +96,9 @@
 
 <script>
     {{--    グローバル変数として別のjsファイルに$coursesを渡す--}}
-        window.Laravel = {};
+    window.Laravel = {};
     window.Laravel.courses = @json($courses);
 </script>
+<script src="{{ asset('js/schedule.js') }}"></script>
 </body>
 </html>
