@@ -13,6 +13,7 @@
 <body>
 
 <!-- Modal -->
+{{--todo 前みたいに編集と作成を同時に行う--}}
 <div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -101,9 +102,10 @@
 </table>
 
 <script>
-    {{--    グローバル変数として別のjsファイルに$coursesを渡す--}}
+    {{--    グローバル変数として別のjsファイルに$coursesと$urlsを渡す--}}
     window.Laravel = {};
     window.Laravel.courses = @json($courses);
+    window.Laravel.urls = @json($urls);
 </script>
 <script src="{{ asset('js/schedule.js') }}"></script>
 </body>

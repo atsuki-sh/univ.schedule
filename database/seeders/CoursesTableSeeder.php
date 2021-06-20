@@ -47,5 +47,16 @@ class CoursesTableSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+
+        DB::table('courses')->insert([
+            'user_id' => 2,
+            'course_index' => 8,
+            'title' => 'データベース',
+            'note' => 'ニュース発表資料を作って練習しておく。',
+            'place' => '大合併講義室',
+            'teacher' => '谷口誠',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
     }
 }

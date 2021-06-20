@@ -21,11 +21,11 @@ Route::get('/', function () {
 // スケジュール画面の表示
 Route::get('/{user_id}/schedule', [CourseController::class, 'show'])->name('course.index');
 // コース作成
-Route::post('/{user_id}/schedule/create', [CourseController::class, 'create']);
+Route::post('/{user_id}/schedule/create', [CourseController::class, 'create'])->name('course.create');
 // コース編集
-Route::post('/{user_id}/schedule/update', [CourseController::class, 'update']);
+Route::post('/{user_id}/schedule/update', [CourseController::class, 'update'])->name('course.update');
 // コース削除
-Route::post('/{user_id}/schedule/delete', [CourseController::class, 'delete']);
+Route::post('/{user_id}/schedule/delete', [CourseController::class, 'delete'])->name('course.delete');
 
 Auth::routes();
 

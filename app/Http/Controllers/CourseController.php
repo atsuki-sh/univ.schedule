@@ -16,19 +16,22 @@ class CourseController extends Controller
         $this->middleware('auth');
     }
 
-    public function show() {
-        // ログインしているユーザーのコースをすべて取得
-        $user = Auth::user();
-        $courses = User::find($user->id)->courses;
-//        dd($courses[0]->title);
+    public function show($user_id) {
+        // todo こう書く場合は、存在しないidが入っていた場合の処理もする必要がある
+        $user = User::find($user_id);
+        $courses = User::find($user_id)->courses;
+        $urls = array(
+            'create' => url("{$user_id}/schedule/create"),
+            'update' => url("{$user_id}/schedule/update"),
+            'delete' => url("{$user_id}/schedule/delete"),
+        );
 
         // コースをscheduleテンプレートに渡し、scheduleを表示
-        return view('schedule', ['courses'=>$courses, 'user'=>$user]);
+        return view('schedule', ['courses'=>$courses, 'user'=>$user, 'urls'=>$urls]);
     }
 
-    public function create(Request $request)
+    public function create($user_id, Request $request)
     {
-        $user_id = Auth::id();
         $course = new Course();
 
         $course->user_id = $user_id;
@@ -41,9 +44,9 @@ class CourseController extends Controller
         $course->save();
     }
 
-    public function update(Request $request)
+    public function update($user_id, Request $request)
     {
-        $user = Auth::user();
+        $user = User::find($user_id);
         $course = User::find($user->id)->courses()->where('course_index', $request->course_index);
         $course->update([
             'title' => $request->title,
@@ -54,10 +57,9 @@ class CourseController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
+    public function delete($user_id, Request $request)
     {
-        $user = Auth::user();
-        $course = User::find($user->id)->courses()->where('course_index', $request->course_index);
+        $course = User::find($user_id)->courses()->where('course_index', $request->course_index);
         $course->delete();
     }
 }

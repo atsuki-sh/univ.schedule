@@ -1,5 +1,6 @@
 // index.blade.phpで定義したLaravel.coursesを使う
 console.log(Laravel.courses);
+console.log(Laravel.urls);
 
 // POST通信のためにCSRFトークンを発行
 $.ajaxSetup({
@@ -98,7 +99,7 @@ $('#btn-submit').click(function() {
     if($('.modal').hasClass('empty')) {
         $.ajax({
             type: 'post', // HTTP通信の種類
-            url: 'schedule/create', // 通信したいURL
+            url: Laravel.urls['create'],
             dataType: 'json',
             data: {
                 course_index: $('#input-title').data('index'),
@@ -121,7 +122,7 @@ $('#btn-submit').click(function() {
     else {
         $.ajax({
             type: 'post', // HTTP通信の種類
-            url: 'schedule/update', // 通信したいURL
+            url: Laravel.urls['update'], // 通信したいURL
             dataType: 'json',
             data: {
                 course_index: $('#input-title').data('index'),
@@ -141,6 +142,7 @@ $('#btn-submit').click(function() {
             })
     }
 
+    // todo リロードもajaxでやる
     // ページをリロードして変更を適用
     window.setTimeout(function() {
         window.location.reload();
@@ -151,7 +153,7 @@ $('#btn-submit').click(function() {
 $('#btn-delete').click(function() {
     $.ajax({
         type: 'post',
-        url: 'schedule/delete',
+        url: Laravel.urls['delete'],
         dataType: 'json',
         data: {
             course_index: $('#input-title').data('index'),
@@ -166,6 +168,7 @@ $('#btn-delete').click(function() {
             console.log(error.statusText);
         })
 
+    // todo リロードもajaxでやる
     // ページをリロードして変更を適用
     window.setTimeout(function() {
         window.location.reload();
