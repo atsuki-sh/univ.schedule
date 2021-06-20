@@ -9,12 +9,9 @@ $.ajaxSetup({
 });
 
 // tdのidとデータのcourse_indexが一致したら、そのデータのタイトルをtdに出力する
+// course_indexの位置のtdに、titleを出力する
 Laravel.courses.forEach(function(course) {
-    for(let i=1; i<=25; i++) {
-        if($(`#${i}`).is(`[id = ${course['course_index']}]`)) {
-            $(`#${i}`).html(`<h5>${course['title']}</h5>`);
-        }
-    }
+    $(`#${course['course_index']}`).html(`<h5>${course['title']}</h5>`)
 });
 
 // tdがクリックされた時の処理
@@ -24,6 +21,7 @@ $('td').click(function() {
     $('#btn-delete').hide();
     $('#btn-submit').hide();
 
+    // 後で使えるよう、クリックされたtdのidを保存しておく
     const $id = $(this).attr('id');
     $('#input-title').attr('data-index', $id);
 

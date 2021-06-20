@@ -56,8 +56,15 @@
 
 <nav class="navbar navbar-light bg-light">
     <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
-    <p>こんにちは！{{ $user->name }}さん</p>
-    <a href="{{ route('home') }}">ホームへ戻る</a>
+    <span>こんにちは！{{ $user->name }}さん</span>
+    <a href="{{ route('logout') }}"
+       onclick="event.preventDefault();
+       document.getElementById('logout-form').submit();">
+        ログアウト
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
 </nav>
 
 <div class="page-menu">

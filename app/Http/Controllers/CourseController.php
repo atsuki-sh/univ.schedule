@@ -10,6 +10,12 @@ use Carbon\Carbon;
 
 class CourseController extends Controller
 {
+    // ログイン済みのユーザー以外はログイン画面へリダイレクト
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function show() {
         // ログインしているユーザーのコースをすべて取得
         $user = Auth::user();
