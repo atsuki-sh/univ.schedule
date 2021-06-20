@@ -56,14 +56,13 @@
 
 <nav class="navbar navbar-light bg-light">
     <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
+    <p>こんにちは！{{ $user->name }}さん</p>
     <a href="{{ route('home') }}">ホームへ戻る</a>
 </nav>
 
 <div class="page-menu">
     <a id="sch" href="#">スケジュール</a>
     <a id="task" href="#">タスク一覧</a>
-    <h4>こんにちは！{{ $user->name }}さん</h4>
-    <h4>あなたのIDは{{ $user->id }}です</h4>
     <i class="fas fa-cog fa-2x"></i>
 </div>
 

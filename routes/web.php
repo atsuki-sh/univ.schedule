@@ -18,7 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/{user_id}/schedule', [CourseController::class, 'show'])->name('course_index');
+// スケジュール画面の表示
+Route::get('/{user_id}/schedule', [CourseController::class, 'show'])->name('course.index');
+// コース作成
+Route::post('/{user_id}/schedule/create', [CourseController::class, 'create']);
+// コース編集
+Route::post('/{user_id}/schedule/update', [CourseController::class, 'update']);
+// コース削除
+Route::post('/{user_id}/schedule/delete', [CourseController::class, 'delete']);
 
 Auth::routes();
 
