@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Faker\Core\Number;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
 use Carbon\Carbon;
+use Psy\Util\Str;
 
 class CourseController extends Controller
 {
@@ -17,17 +19,25 @@ class CourseController extends Controller
     }
 
     public function show($user_id) {
-        // todo こう書く場合は、存在しないidが入っていた場合の処理もする必要がある
-        $user = User::find($user_id);
-        $courses = User::find($user_id)->courses;
-        $urls = array(
-            'create' => url("{$user_id}/schedule/create"),
-            'update' => url("{$user_id}/schedule/update"),
-            'delete' => url("{$user_id}/schedule/delete"),
-        );
+        $auth_id = strval(Auth::id());
 
-        // コースをscheduleテンプレートに渡し、scheduleを表示
-        return view('schedule', ['courses'=>$courses, 'user'=>$user, 'urls'=>$urls]);
+        // urlのidがログインしているユーザーと一緒ならviewを表示
+        // そうでないならログイン中のユーザーのページにリダイレクト
+        if($user_id === $auth_id) {
+            $user = User::find($user_id);
+            $courses = User::find($user_id)->courses;
+            $urls = array(
+                'create' => url("{$user_id}/schedule/create"),
+                'update' => url("{$user_id}/schedule/update"),
+                'delete' => url("{$user_id}/schedule/delete"),
+            );
+
+            // コースをscheduleテンプレートに渡し、scheduleを表示
+            return view('schedule', ['courses'=>$courses, 'user'=>$user, 'urls'=>$urls]);
+        }
+        else {
+            redirect()->route('course.index', ['user_id' => $auth_id]);
+        }
     }
 
     public function create($user_id, Request $request)

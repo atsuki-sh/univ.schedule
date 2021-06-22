@@ -102,7 +102,6 @@
 </table>
 
 <script>
-    {{--    グローバル変数として別のjsファイルに$coursesと$urlsを渡す--}}
     window.Laravel = {};
     window.Laravel.courses = @json($courses);
     window.Laravel.urls = @json($urls);
