@@ -27,6 +27,7 @@ class CourseController extends Controller
             $user = User::find($user_id);
             $courses = User::find($user_id)->courses;
             $urls = array(
+                'index' => url("{$user_id}/schedule"),
                 'create' => url("{$user_id}/schedule/create"),
                 'update' => url("{$user_id}/schedule/update"),
                 'delete' => url("{$user_id}/schedule/delete"),
@@ -36,7 +37,7 @@ class CourseController extends Controller
             return view('schedule', ['courses'=>$courses, 'user'=>$user, 'urls'=>$urls]);
         }
         else {
-            redirect()->route('course.index', ['user_id' => $auth_id]);
+            return redirect()->route('course.index', ['user_id' => $auth_id]);
         }
     }
 

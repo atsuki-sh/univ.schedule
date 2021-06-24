@@ -13,43 +13,35 @@
 <body>
 
 <!-- Modal -->
-{{--todo 前みたいに編集と作成を同時に行う--}}
-<div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 {{--                タイトル--}}
                 <input type="text" class="modal-input h5" id="input-title" data-index="" placeholder="タイトルを入力" value="">
-                <h5 class="show-data" id="modal-title"></h5>
             </div>
             <div class="modal-body">
                 <div class="item">
                     {{--                    メモ--}}
                     <i class="fas fa-pen fa-lg fa-fw"></i>
-                    <textarea class="modal-input" id="input-note" placeholder="メモを入力" rows="5"></textarea>
-                    <p class="show-data" id="modal-note"></p>
+                    <textarea class="modal-input" id="input-note" placeholder="メモを入力" rows="3"></textarea>
                 </div>
                 <div class="item">
                     {{--                    場所--}}
                     <i class="fas fa-map-marker-alt fa-lg fa-fw"></i>
                     <input type="text" class="modal-input" id="input-place" placeholder="場所を入力" value="">
-                    <p class="show-data" id="modal-place"></p>
                 </div>
                 <div class="item">
                     {{--                    先生--}}
                     <i class="fas fa-user fa-lg fa-fw"></i>
                     <input type="text" class="modal-input" id="input-teacher" placeholder="先生を入力" value="">
-                    <p class="show-data" id="modal-teacher"></p>
                 </div>
             </div>
             <div class="modal-footer">
 {{--                ボタン類--}}
-                <button type="button" class="btn btn-danger" id="btn-delete">削除</button>
+                <button type="button" class="btn btn-danger" id="btn-delete" data-dismiss="modal">削除</button>
                 <button type="button" class="btn btn-light" id="btn-close" data-dismiss="modal">閉じる</button>
-                <button type="button" class="btn btn-light" id="btn-cancel">キャンセル</button>
-                <button type="button" class="btn btn-primary" id="btn-edit">編集</button>
-                <button type="button" class="btn btn-primary" id="btn-create">作成</button>
-                <button type="button" class="btn btn-primary" id="btn-submit">完了</button>
+                <button type="button" class="btn btn-primary" id="btn-submit" data-dismiss="modal">完了</button>
             </div>
         </div>
     </div>

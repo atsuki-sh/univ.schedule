@@ -9,88 +9,51 @@ $.ajaxSetup({
     }
 });
 
-// tdのidとデータのcourse_indexが一致したら、そのデータのタイトルをtdに出力する
+// ページリロードのためのfunctionを定義
+function ajaxReload() {
+    $.ajax({
+        type: 'get',
+        url: Laravel.urls['index'],
+    });
+}
+
 // course_indexの位置のtdに、titleを出力する
 Laravel.courses.forEach(function(course) {
     $(`#${course['course_index']}`).html(`<h5>${course['title']}</h5>`)
 });
 
+// target_courseをグローバル変数として宣言
+let target_course;
+
 // tdがクリックされた時の処理
 $('td').click(function() {
     $('#exampleModal').modal('show');
-    $('#btn-cancel').hide();
-    $('#btn-delete').hide();
-    $('#btn-submit').hide();
 
-    // 後で使えるよう、クリックされたtdのidを保存しておく
+    // 後で使えるよう、クリックされたtdのid(course_index)を保存しておく
     const $id = $(this).attr('id');
     $('#input-title').attr('data-index', $id);
 
     // クリックされたtdのデータをモーダルに埋め込む
-    // 途中でbreakしたいので、forEachじゃなくてsomeを使う
-    Laravel.courses.some(function(course) {
-        let course_index = String(course['course_index']);
+    target_course = Laravel.courses.find(
+        (course) => String(course['course_index']) === $id);
+    console.log(target_course);
 
-        if($id === course_index) {
-            $('.modal').removeClass('empty');
-            $('#btn-edit').show();
-            $('#btn-create').hide();
-            $('#modal-title').text(course['title']);
-            $('#modal-note').text(course['note']);
-            $('#modal-place').text(course['place']);
-            $('#modal-teacher').text(course['teacher']);
-            return true;
-        } else {
-            $('.modal').addClass('empty');
-            $('#btn-edit').hide();
-            $('#btn-create').show();
-            $('.show-data').text('');
-        }
-    });
-});
-
-$('#btn-edit').click(function() {
-    $('.modal-input').show();
-    $('.show-data').hide();
-    $('#btn-cancel').show();
-    $('#btn-close').hide();
-    $('#btn-delete').show();
-    $('#btn-submit').show();
-    $(this).hide();
-
-    $('#input-title').val($('#modal-title').text());
-    $('#input-note').val($('#modal-note').text());
-    $('#input-place').val($('#modal-place').text());
-    $('#input-teacher').val($('#modal-teacher').text());
-});
-
-$('#btn-create').click(function() {
-    $('.modal-input').show();
-    $('.show-data').hide();
-    $('#btn-cancel').show();
-    $('#btn-close').hide();
-    $('#btn-submit').show();
-    $(this).hide();
-
-    $('#input-title').val('');
-    $('#input-note').val('');
-    $('#input-place').val('');
-    $('#input-teacher').val('');
-});
-
-$('#btn-cancel').click(function() {
-    $('.modal-input').hide();
-    $('.show-data').show();
-    $('#btn-cancel').hide();
-    $('#btn-close').show();
-    $('#btn-delete').hide();
-    $('#btn-submit').hide();
-
-    if($('.modal').hasClass('empty')) {
-        $('#btn-create').show();
+    // クリックしたtdが空かどうかの判定
+    if(target_course === undefined) {
+        // 空ならemptyクラスをつける(作成か編集かの判定に使う)
+        $('.modal').addClass('empty');
+        $('#input-title').val('');
+        $('#input-note').val('');
+        $('#input-place').val('');
+        $('#input-teacher').val('');
     } else {
-        $('#btn-edit').show();
+        $('.modal').removeClass('empty');
+        $('#input-title').val(target_course['title']);
+        $('#input-note').val(target_course['note']);
+        $('#input-place').val(target_course['place']);
+        $('#input-teacher').val(target_course['teacher']);
     }
+
 });
 
 // 編集・作成データの送信（ajax）
@@ -112,6 +75,7 @@ $('#btn-submit').click(function() {
             // 通信に成功したとき
             .done((res)=>{
                 console.log(res.message);
+                ajaxReload();
             })
             // 通信に失敗したとき
             .fail((error)=>{
@@ -135,18 +99,13 @@ $('#btn-submit').click(function() {
             // 通信に成功したとき
             .done((res)=>{
                 console.log(res.message);
+                ajaxReload();
             })
             // 通信に失敗したとき
             .fail((error)=>{
                 console.log(error.statusText);
             })
     }
-
-    // todo リロードもajaxでやる
-    // ページをリロードして変更を適用
-    window.setTimeout(function() {
-        window.location.reload();
-    }, 1000);
 });
 
 // データの削除
@@ -162,15 +121,25 @@ $('#btn-delete').click(function() {
         // 通信に成功したとき
         .done((res)=>{
             console.log(res.message);
+            ajaxReload();
         })
         // 通信に失敗したとき
         .fail((error)=>{
             console.log(error.statusText);
         })
+});
 
-    // todo リロードもajaxでやる
-    // ページをリロードして変更を適用
-    window.setTimeout(function() {
-        window.location.reload();
-    }, 1000);
+// 閉じるボタンが押されたときは入力値を戻す
+$('#btn-close').click(function() {
+    if($('.modal').hasClass('empty')) {
+        $('#input-title').val('');
+        $('#input-note').val('');
+        $('#input-place').val('');
+        $('#input-teacher').val('');
+    } else {
+        $('#input-title').val(target_course['title']);
+        $('#input-note').val(target_course['note']);
+        $('#input-place').val(target_course['place']);
+        $('#input-teacher').val(target_course['teacher']);
+    }
 });

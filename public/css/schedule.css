@@ -41,20 +41,34 @@ td:hover {
     padding: 12px 28px;
 }
 
-.show-data {
-    /*border: 1px solid black;*/
-    margin: 0;
+.modal-input {
     width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
-.modal-input {
-    display: none;
-    width: 100%;
+.modal-input:hover {
+    border: 1px solid #1abc9c;
+}
+
+.modal-input:focus {
+    box-shadow: 0 0 7px #1abc9c;
+    border: 1px solid #1abc9c;
+}
+
+#input-title {
+    margin-bottom: 0;
 }
 
 .item {
     display: flex;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     align-items: center;
 }
 
