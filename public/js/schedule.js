@@ -18,9 +18,9 @@ function ajaxReload() {
 }
 
 // course_indexの位置のtdに、titleを出力する
-Laravel.courses.forEach(function(course) {
-    $(`#${course['course_index']}`).html(`<h5>${course['title']}</h5>`)
-});
+for (const course of Laravel.courses) {
+    $(`#${course['course_index']}`).html(`<h5>${course['title']}</h5>`);
+}
 
 // target_courseをグローバル変数として宣言
 let target_course;
@@ -75,7 +75,7 @@ $('#btn-submit').click(function() {
             // 通信に成功したとき
             .done((res)=>{
                 console.log(res.message);
-                ajaxReload();
+                // ajaxReload();
             })
             // 通信に失敗したとき
             .fail((error)=>{
@@ -99,13 +99,15 @@ $('#btn-submit').click(function() {
             // 通信に成功したとき
             .done((res)=>{
                 console.log(res.message);
-                ajaxReload();
+                // ajaxReload();
             })
             // 通信に失敗したとき
             .fail((error)=>{
                 console.log(error.statusText);
             })
     }
+
+    setTimeout('location.reload()', 1000);
 });
 
 // データの削除
@@ -121,12 +123,14 @@ $('#btn-delete').click(function() {
         // 通信に成功したとき
         .done((res)=>{
             console.log(res.message);
-            ajaxReload();
+            // ajaxReload();
         })
         // 通信に失敗したとき
         .fail((error)=>{
             console.log(error.statusText);
         })
+
+    setTimeout('location.reload()', 1000);
 });
 
 // 閉じるボタンが押されたときは入力値を戻す
