@@ -10,6 +10,7 @@ $.ajaxSetup({
 });
 
 // ページリロードのためのfunctionを定義
+// todo ajaxでリロードする
 function ajaxReload() {
     $.ajax({
         type: 'get',
@@ -42,12 +43,14 @@ $('td').click(function() {
     if(target_course === undefined) {
         // 空ならemptyクラスをつける(作成か編集かの判定に使う)
         $('.modal').addClass('empty');
+        $('#btn-delete').hide();
         $('#input-title').val('');
         $('#input-note').val('');
         $('#input-place').val('');
         $('#input-teacher').val('');
     } else {
         $('.modal').removeClass('empty');
+        $('#btn-delete').show();
         $('#input-title').val(target_course['title']);
         $('#input-note').val(target_course['note']);
         $('#input-place').val(target_course['place']);
@@ -63,7 +66,6 @@ $('#btn-submit').click(function() {
         $.ajax({
             type: 'post', // HTTP通信の種類
             url: Laravel.urls['create'],
-            dataType: 'json',
             data: {
                 course_index: $('#input-title').data('index'),
                 title: $('#input-title').val(),
@@ -76,10 +78,17 @@ $('#btn-submit').click(function() {
             .done((res)=>{
                 console.log(res.message);
                 // ajaxReload();
+                $('.alert').hide();
+                setTimeout('location.reload()', 1000);
             })
             // 通信に失敗したとき
-            .fail((error)=>{
-                console.log(error.statusText);
+            .fail((xhr, textStatus, errorThrown)=>{
+                // xhr.responseJSON.errorsに、バリデーションして返ってきたエラーが入っている
+                console.log(xhr.responseJSON.errors['title'][0]);
+                console.error(errorThrown);
+
+                $('.alert').text(xhr.responseJSON.errors['title'][0]);
+                $('.alert').show();
             })
     }
     // 編集データ
@@ -87,7 +96,6 @@ $('#btn-submit').click(function() {
         $.ajax({
             type: 'post', // HTTP通信の種類
             url: Laravel.urls['update'], // 通信したいURL
-            dataType: 'json',
             data: {
                 course_index: $('#input-title').data('index'),
                 title: $('#input-title').val(),
@@ -100,14 +108,18 @@ $('#btn-submit').click(function() {
             .done((res)=>{
                 console.log(res.message);
                 // ajaxReload();
+                $('.alert').hide();
+                setTimeout('location.reload()', 1000);
             })
             // 通信に失敗したとき
-            .fail((error)=>{
-                console.log(error.statusText);
+            .fail((xhr, textStatus, errorThrown)=>{
+                // xhr.responseJSON.errorsに、バリデーションして返ってきたエラーが入っている
+                console.log(xhr.responseJSON.errors['title'][0]);
+
+                $('.alert').text(xhr.responseJSON.errors['title'][0]);
+                $('.alert').show();
             })
     }
-
-    setTimeout('location.reload()', 1000);
 });
 
 // データの削除
@@ -115,7 +127,6 @@ $('#btn-delete').click(function() {
     $.ajax({
         type: 'post',
         url: Laravel.urls['delete'],
-        dataType: 'json',
         data: {
             course_index: $('#input-title').data('index'),
         }
@@ -124,13 +135,12 @@ $('#btn-delete').click(function() {
         .done((res)=>{
             console.log(res.message);
             // ajaxReload();
+            setTimeout('location.reload()', 1000);
         })
         // 通信に失敗したとき
         .fail((error)=>{
             console.log(error.statusText);
         })
-
-    setTimeout('location.reload()', 1000);
 });
 
 // 閉じるボタンが押されたときは入力値を戻す
@@ -146,4 +156,7 @@ $('#btn-close').click(function() {
         $('#input-place').val(target_course['place']);
         $('#input-teacher').val(target_course['teacher']);
     }
+
+    $('#btn-submit').data('dismiss', '');
+    $('.alert').hide();
 });

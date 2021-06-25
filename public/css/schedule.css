@@ -41,6 +41,17 @@ td:hover {
     padding: 12px 28px;
 }
 
+.modal-header {
+    display: block;
+}
+
+.alert {
+    display: none;
+    padding: 4px;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
 .modal-input {
     width: 100%;
     padding: 8px;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Faker\Core\Number;
 use Illuminate\Http\Request;
+use App\Http\Requests\CourseRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
@@ -41,7 +42,7 @@ class CourseController extends Controller
         }
     }
 
-    public function create($user_id, Request $request)
+    public function create($user_id, CourseRequest $request)
     {
         $course = new Course();
 
@@ -55,7 +56,7 @@ class CourseController extends Controller
         $course->save();
     }
 
-    public function update($user_id, Request $request)
+    public function update($user_id, CourseRequest $request)
     {
         $user = User::find($user_id);
         $course = User::find($user->id)->courses()->where('course_index', $request->course_index);

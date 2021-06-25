@@ -13,11 +13,12 @@
 <body>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 {{--                タイトル--}}
+                <div class="alert alert-danger"></div>
                 <input type="text" class="modal-input h5" id="input-title" data-index="" placeholder="タイトルを入力" value="">
             </div>
             <div class="modal-body">
@@ -41,7 +42,7 @@
 {{--                ボタン類--}}
                 <button type="button" class="btn btn-danger" id="btn-delete" data-dismiss="modal">削除</button>
                 <button type="button" class="btn btn-light" id="btn-close" data-dismiss="modal">閉じる</button>
-                <button type="button" class="btn btn-primary" id="btn-submit" data-dismiss="modal">完了</button>
+                <button type="button" class="btn btn-primary" id="btn-submit">完了</button>
             </div>
         </div>
     </div>
