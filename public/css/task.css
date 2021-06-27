@@ -3,6 +3,7 @@
     /*height: 50px;*/
     /*padding: 0;*/
     background-color: #e3f2fd;
+    margin-bottom: 30px;
 }
 
 #logout {
@@ -105,4 +106,23 @@ h5, h6 {
 
 .fas, .far {
     margin-right: 6px;
+}
+
+.page-menu {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.page-menu a {
+    color: black;
+    margin-right: 30px;
+    font-size: large;
+    text-decoration: none;
+}
+
+/*「スケジュール」に青の下線*/
+#task {
+    border-bottom: 3px solid blue;
 }

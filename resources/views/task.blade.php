@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -14,7 +15,10 @@
     <a id="logout" href="#">ログアウト</a>
 </nav>
 
-<br>
+<div class="page-menu">
+    <a id="sch" href="#">スケジュール</a>
+    <a id="task" href="#">タスク一覧</a>
+</div>
 
 <ul class="list-group">
     <div class="list-head">
@@ -25,6 +29,10 @@
         <div class="button">
             <i class="fas fa-sort fa-2x"></i>
             並び替え
+        </div>
+        <div class="button">
+            <i class="fas fa-cog fa-2x"></i>
+            設定
         </div>
     </div>
     <li class="list-group-item list-group-item-action">
@@ -88,5 +96,7 @@
         </div>
     </li>
 </ul>
+
+<script src="{{ asset('js/task.js') }}"></script>
 </body>
 </html>
