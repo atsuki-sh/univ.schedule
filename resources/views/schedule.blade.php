@@ -48,7 +48,7 @@
     </div>
 </div>
 
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar">
     <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
     <span>こんにちは！{{ $user->name }}さん</span>
     <a href="{{ route('logout') }}"
@@ -63,7 +63,7 @@
 
 <div class="page-menu">
     <a id="sch" href="#">スケジュール</a>
-    <a id="task" href="#">タスク一覧</a>
+    <a id="task" href="{{ route('task.index', ["user_id" => $user->id]) }}">タスク一覧</a>
     <i class="fas fa-cog fa-2x"></i>
 </div>
 

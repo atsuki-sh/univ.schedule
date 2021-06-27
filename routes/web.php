@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ Route::post('/{user_id}/schedule/create', [CourseController::class, 'create'])->
 Route::post('/{user_id}/schedule/update', [CourseController::class, 'update'])->name('course.update');
 // コース削除
 Route::post('/{user_id}/schedule/delete', [CourseController::class, 'delete'])->name('course.delete');
+
+// タスク画面の表示
+Route::get('/{user_id}/task', [TaskController::class, 'show'])->name('task.index');
 
 Auth::routes();
 
