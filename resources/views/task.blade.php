@@ -25,11 +25,14 @@
                 <div class="item">
                     {{--                    科目名--}}
                     <i class="fas fa-map-marker-alt fa-lg fa-fw"></i>
-                    <select class="modal-input">
-                        <option>科目名を選択</option>
+{{--todo ユーザーのコースを選択肢として表示                    --}}
+                    <select class="modal-input" id="input-course">
+                        <option value="" id="course_holder">科目を選択してください</option>
                         <option>価値創造方法論</option>
                         <option>機械学習</option>
                         <option>プログラミング</option>
+                        <option>音声データと画像処理分析</option>
+                        <option>その他</option>
                     </select>
                 </div>
                 <div class="item">
@@ -38,14 +41,14 @@
                     <textarea class="modal-input" id="input-note" placeholder="メモを入力" rows="3"></textarea>
                 </div>
                 <div class="item">
-                    {{--                    先生--}}
+                    {{--                    期限--}}
                     <i class="fas fa-user fa-lg fa-fw"></i>
-                    <input type="text" class="modal-input" id="input-teacher" placeholder="期限を選択" value="">
+                    <input type="text" class="modal-input" id="input-due" placeholder="期限を選択" value="">
                 </div>
                 <div class="item">
                     {{-- ステータススイッチ --}}
                     <i class="fas fa-user fa-lg fa-fw"></i>
-                    <input type="checkbox" data-toggle="toggle" data-width="100px" data-on="完了" data-off="未完了" data-onstyle="success" data-offstyle="danger">
+                    <input id="input-status" type="checkbox" data-toggle="toggle" data-width="100px" data-on="完了" data-off="未完了" data-onstyle="success" data-offstyle="danger">
                 </div>
             </div>
             <div class="modal-footer">
@@ -68,10 +71,6 @@
     <a id="sch" href="#">スケジュール</a>
     <a id="task" href="#">タスク一覧</a>
 </div>
-
-@foreach($tasks as $task)
-    <h3>{{ $task->course }}</h3>
-@endforeach
 
 <ul class="list-group">
     <div class="list-head">
@@ -161,7 +160,7 @@
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ja.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script>
-    flatpickr(document.getElementById('input-teacher'), {
+    flatpickr(document.getElementById('input-due'), {
         locale: 'ja',
         dateFormat: "Y/m/d",
         minDate: new Date()

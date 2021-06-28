@@ -201,6 +201,10 @@ h5, h6 {
     margin-right: 6px;
 }
 
+#course_holder {
+    display: none;
+}
+
 /* 削除ボタンだけ左寄せ */
 .modal-footer {
     justify-content: flex-end;
@@ -209,7 +213,6 @@ h5, h6 {
     margin-right: auto;
 }
 
-/*todo 削除ボタンのデザインがうまく適用されない*/
 #btn-delete {
     color: red;
     background-color: white;
