@@ -22,6 +22,7 @@ class TasksTableSeeder extends Seeder
             'course' => '価値創造方法論',
             'note' => '提出はwordファイル',
             'due_date' => Carbon::now()->addDay(3),
+            'status' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -33,6 +34,7 @@ class TasksTableSeeder extends Seeder
             'course' => '音声データと画像処理分析',
             'note' => '提出はメールで送信',
             'due_date' => Carbon::now()->addDay(6),
+            'status' => 2,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

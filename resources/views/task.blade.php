@@ -60,6 +60,7 @@
 
 <nav class="navbar">
     <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
+    <p>こんにちは！{{ $user->name }}さん</p>
     <a id="logout" href="#">ログアウト</a>
 </nav>
 
@@ -67,6 +68,10 @@
     <a id="sch" href="#">スケジュール</a>
     <a id="task" href="#">タスク一覧</a>
 </div>
+
+@foreach($tasks as $task)
+    <h3>{{ $task->course }}</h3>
+@endforeach
 
 <ul class="list-group">
     <div class="list-head">
