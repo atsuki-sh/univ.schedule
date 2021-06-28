@@ -14,7 +14,14 @@ class CreateTasksTable extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('course_index')->constrained('courses');
+            $table->id('task_id');
+            $table->string('title');
+            $table->string('course');
+            $table->text('note');
+            $table->date('due_date');
+            $table->integer('status');
             $table->timestamps();
         });
     }

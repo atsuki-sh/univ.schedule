@@ -23,6 +23,11 @@ class User extends Authenticatable
         return $this->hasMany(Course::class);
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     protected $fillable = [
         'name',
         'email',
