@@ -88,74 +88,73 @@
             設定
         </div>
     </div>
-    <li class="list-group-item list-group-item-action">
-        <div class="task-list" id="task-example">
-            <h4>タスクを追加してください</h4>
-        </div>
-    </li>
-    <li class="list-group-item list-group-item-action">
-        <div class="task-list">
-            <div class="check">
-                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">
-            </div>
-            <div class="task-left">
-                <h5>レポート提出</h5>
-                <h6>科目名</h6>
-            </div>
-            <div class="task-right">
-                <h5>残り2日</h5>
-                <h6>6/24</h6>
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item list-group-item-action">
-        <div class="task-list">
-            <div class="check">
-                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">
-            </div>
-            <div class="task-left">
-                <h5>レポート提出</h5>
-                <h6>科目名</h6>
-            </div>
-            <div class="task-right">
-                <h5>残り2日</h5>
-                <h6>6/24</h6>
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item list-group-item-action">
-        <div class="task-list">
-            <div class="check">
-                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">
-            </div>
-            <div class="task-left">
-                <h5>レポート提出</h5>
-                <h6>科目名</h6>
-            </div>
-            <div class="task-right">
-                <h5>残り2日</h5>
-                <h6>6/24</h6>
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item list-group-item-action">
-        <div class="task-list">
-            <div class="check">
-                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">
-            </div>
-            <div class="task-left">
-                <h5>レポート提出</h5>
-                <h6>科目名</h6>
-            </div>
-            <div class="task-right">
-                <h5>残り2日</h5>
-                <h6>6/24</h6>
-            </div>
-        </div>
-    </li>
+{{--    <li class="list-group-item list-group-item-action">--}}
+{{--        <div class="task-list" id="task-example">--}}
+{{--            <h4>タスクを追加してください</h4>--}}
+{{--        </div>--}}
+{{--    </li>--}}
+{{--    <li class="list-group-item list-group-item-action">--}}
+{{--        <div class="task-list">--}}
+{{--            <div class="check">--}}
+{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
+{{--            </div>--}}
+{{--            <div class="task-left">--}}
+{{--                <h5>レポート提出</h5>--}}
+{{--                <h6>科目名</h6>--}}
+{{--            </div>--}}
+{{--            <div class="task-right">--}}
+{{--                <h5>残り2日</h5>--}}
+{{--                <h6>6/24</h6>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </li>--}}
+{{--    <li class="list-group-item list-group-item-action">--}}
+{{--        <div class="task-list">--}}
+{{--            <div class="check">--}}
+{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
+{{--            </div>--}}
+{{--            <div class="task-left">--}}
+{{--                <h5>レポート提出</h5>--}}
+{{--                <h6>科目名</h6>--}}
+{{--            </div>--}}
+{{--            <div class="task-right">--}}
+{{--                <h5>残り2日</h5>--}}
+{{--                <h6>6/24</h6>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </li>--}}
+{{--    <li class="list-group-item list-group-item-action">--}}
+{{--        <div class="task-list">--}}
+{{--            <div class="check">--}}
+{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
+{{--            </div>--}}
+{{--            <div class="task-left">--}}
+{{--                <h5>レポート提出</h5>--}}
+{{--                <h6>科目名</h6>--}}
+{{--            </div>--}}
+{{--            <div class="task-right">--}}
+{{--                <h5>残り2日</h5>--}}
+{{--                <h6>6/24</h6>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </li>--}}
+{{--    <li class="list-group-item list-group-item-action">--}}
+{{--        <div class="task-list">--}}
+{{--            <div class="check">--}}
+{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
+{{--            </div>--}}
+{{--            <div class="task-left">--}}
+{{--                <h5>レポート提出</h5>--}}
+{{--                <h6>科目名</h6>--}}
+{{--            </div>--}}
+{{--            <div class="task-right">--}}
+{{--                <h5>残り2日</h5>--}}
+{{--                <h6>6/24</h6>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </li>--}}
 </ul>
 
-<script src="{{ asset('js/task.js') }}"></script>
 <!-- flatpickrスクリプト -->
 <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
 <!-- 日本語化のための追加スクリプト -->
@@ -168,5 +167,10 @@
         minDate: new Date()
     });
 </script>
+<script>
+    window.Laravel = {};
+    window.Laravel.tasks = @json($tasks);
+</script>
+<script src="{{ asset('js/task.js') }}"></script>
 </body>
 </html>
