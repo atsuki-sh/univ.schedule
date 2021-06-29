@@ -1,6 +1,14 @@
 // ログイン中のユーザーのタスクを受け取る
 console.log(Laravel.tasks);
 
+// タスクがなかったらtask-defaultを表示、あるなら隠す
+if(Laravel.tasks.length === 0) {
+    $('#task-default').css('display', 'flex');
+} else {
+    $('#task-default').css('display', 'none');
+}
+
+// todo task['task_id']がたくさん使われているから変数に入れて置換
 // タスク一覧を表示
 for (const task of Laravel.tasks) {
     // due_dateのフォーマットを変える
@@ -50,6 +58,12 @@ for (const task of Laravel.tasks) {
         // プラスにする
         $(`#${task['task_id']} #remaining`).text(`${-1 * remaining_day}日前`);
     }
+
+    // statusが2(完了)ならチェックボックスにチェック入れて取消線
+    if(task['status'] === 2) {
+        $(`#${task['task_id']} .check .checkbox`).attr('checked', true).prop('checked', true).change();
+        $(`#${task['task_id']}`).children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'line-through');
+    }
 }
 
 // 追加ボタンが押されたら、空のモーダルを表示
@@ -61,6 +75,7 @@ $('#plus').click(function () {
     $('#input-status').removeAttr('checked').prop('checked', false).change();
 
     $('#btn-delete').hide();
+    $('#btn-close').text('キャンセル');
 
     $('#exampleModal').modal('show');
 })
@@ -87,12 +102,14 @@ $('.task-left, .task-right').click(function () {
     }
 
     $('#btn-delete').show();
+    $('#btn-close').text('閉じる');
 
     $('#exampleModal').modal('show');
 })
 
 // チェックボックスのクリックで取り消し線のONとOFF
-$('.checkbox').click(function () {
+// todo 期限のテキストが「完了」になるように。チェックを外すと元の期限日が表示
+$('.checkbox').change(function () {
     if($(this).is(':checked')) {
         $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'line-through');
     } else {

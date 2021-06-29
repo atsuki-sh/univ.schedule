@@ -43,7 +43,7 @@
     padding: 0;
 }
 
-#task-example {
+#task-default {
     display: flex;
     vertical-align: center;
     justify-content: space-around;
@@ -53,7 +53,7 @@
     padding: 8px;
 }
 
-#task-example h4 {
+#task-default h4 {
     margin: 0;
 }
 

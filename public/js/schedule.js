@@ -44,6 +44,7 @@ $('td').click(function() {
         // 空ならemptyクラスをつける(作成か編集かの判定に使う)
         $('.modal').addClass('empty');
         $('#btn-delete').hide();
+        $('#btn-close').text('キャンセル');
         $('#input-title').val('');
         $('#input-note').val('');
         $('#input-place').val('');
@@ -51,6 +52,7 @@ $('td').click(function() {
     } else {
         $('.modal').removeClass('empty');
         $('#btn-delete').show();
+        $('#btn-close').text('閉じる');
         $('#input-title').val(target_course['title']);
         $('#input-note').val(target_course['note']);
         $('#input-place').val(target_course['place']);

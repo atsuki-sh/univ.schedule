@@ -24,7 +24,7 @@
             <div class="modal-body">
                 <div class="item">
                     {{--                    科目名--}}
-                    <i class="fas fa-map-marker-alt fa-lg fa-fw"></i>
+                    <i class="fas fa-chalkboard fa-lg fa-fw"></i>
                     <select class="modal-input" id="input-course">
                         <option id="course_holder" value="0" selected>科目を選択してください</option>
                         @foreach($course_titles as $title)
@@ -40,12 +40,12 @@
                 </div>
                 <div class="item">
                     {{--                    期限--}}
-                    <i class="fas fa-user fa-lg fa-fw"></i>
+                    <i class="far fa-calendar-alt fa-lg fa-fw"></i>
                     <input type="text" class="modal-input" id="input-due" placeholder="期限を選択" value="">
                 </div>
                 <div class="item">
                     {{-- ステータススイッチ --}}
-                    <i class="fas fa-user fa-lg fa-fw"></i>
+                    <i class="far fa-check-square fa-lg fa-fw"></i>
                     <input id="input-status" type="checkbox" data-toggle="toggle" data-width="100px" data-on="完了" data-off="未完了" data-onstyle="success" data-offstyle="danger">
                 </div>
             </div>
@@ -53,6 +53,7 @@
                 {{--                ボタン類--}}
                 <button type="button" class="btn btn-danger" id="btn-delete" data-dismiss="modal">削除</button>
                 <button type="button" class="btn btn-light" id="btn-close" data-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-light" id="btn-cancel" data-dismiss="modal">キャンセル</button>
                 <button type="button" class="btn btn-primary" id="btn-submit">完了</button>
             </div>
         </div>
@@ -62,7 +63,14 @@
 <nav class="navbar">
     <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
     <p>こんにちは！{{ $user->name }}さん</p>
-    <a id="logout" href="#">ログアウト</a>
+    <a href="{{ route('logout') }}"
+       onclick="event.preventDefault();
+       document.getElementById('logout-form').submit();">
+        ログアウト
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
 </nav>
 
 <div class="page-menu">
@@ -85,11 +93,13 @@
             設定
         </div>
     </div>
-{{--    <li class="list-group-item list-group-item-action">--}}
-{{--        <div class="task-list" id="task-example">--}}
-{{--            <h4>タスクを追加してください</h4>--}}
-{{--        </div>--}}
-{{--    </li>--}}
+{{--    タスクがないときに表示するやつ--}}
+    <li class="list-group-item list-group-item-action" id="task-default">
+        <div class="task-list">
+            <h4>タスクを追加してください</h4>
+        </div>
+    </li>
+</ul>
 
 <!-- flatpickrスクリプト -->
 <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
