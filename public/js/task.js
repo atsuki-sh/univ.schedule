@@ -24,8 +24,8 @@ for (const task of Laravel.tasks) {
 
     // タスクリストを追加
     const new_task =
-        `<li class="list-group-item list-group-item-action" id="${task['task_id']}">\n` +
-        '        <div class="task-list">\n' +
+        `<li class="list-group-item list-group-item-action">\n` +
+        `        <div class="task-list" id="${task['task_id']}">\n` +
         '            <div class="check">\n' +
         `                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">\n` +
         '            </div>\n' +
@@ -55,17 +55,19 @@ for (const task of Laravel.tasks) {
 // 追加ボタンが押されたら、空のモーダルを表示
 $('#plus').click(function () {
     $('#input-title').val('');
-    $('#input-course').val('');
+    $('#input-course').val('0');
     $('#input-note').val('');
     $('#input-due').val('');
     $('#input-status').removeAttr('checked').prop('checked', false).change();
+
+    $('#btn-delete').hide();
 
     $('#exampleModal').modal('show');
 })
 
 // タスクがクリックされたら、クリックされたタスクのデータをモーダルに表示
-$('.list-group-item').click(function () {
-    const $id = $(this).attr('id');
+$('.task-left, .task-right').click(function () {
+    const $id = $(this).parents('.task-list').attr('id');
 
     // target_taskがクリックされたタスクのデータ
     const target_task = Laravel.tasks.find(
@@ -73,7 +75,7 @@ $('.list-group-item').click(function () {
     console.log(target_task);
 
     $('#input-title').val(target_task['title']);
-    $('#input-course').val(target_task['course']);
+    $('#input-course').val(target_task['course_index']);
     $('#input-note').val(target_task['note']);
     $('#input-due').val(target_task['due_date']);
     // statusが1なら「未完了」、2なら「完了」
@@ -84,13 +86,16 @@ $('.list-group-item').click(function () {
         $('#input-status').attr('checked', true).prop('checked', true).change();
     }
 
+    $('#btn-delete').show();
+
     $('#exampleModal').modal('show');
 })
 
-// todo チェックを入れると取り消し線、完了に変更
-// 取り消し線のONとOFFができるように
-// $('.checkbox').click(function () {
-//     $('h5').css('text-decoration', 'line-through');
-//     $('h6').css('text-decoration', 'line-through');
-//     $('.task-right h5').text('完了');
-// })
+// チェックボックスのクリックで取り消し線のONとOFF
+$('.checkbox').click(function () {
+    if($(this).is(':checked')) {
+        $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'line-through');
+    } else {
+        $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'none');
+    }
+})

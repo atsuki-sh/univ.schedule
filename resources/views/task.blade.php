@@ -25,14 +25,12 @@
                 <div class="item">
                     {{--                    科目名--}}
                     <i class="fas fa-map-marker-alt fa-lg fa-fw"></i>
-{{--todo ユーザーのコースを選択肢として表示                    --}}
                     <select class="modal-input" id="input-course">
-                        <option value="" id="course_holder">科目を選択してください</option>
-                        <option>価値創造方法論</option>
-                        <option>機械学習</option>
-                        <option>プログラミング</option>
-                        <option>音声データと画像処理分析</option>
-                        <option>その他</option>
+                        <option id="course_holder" value="0" selected>科目を選択してください</option>
+                        @foreach($course_titles as $title)
+                            <option value="{{ $course_indexes[$loop->index] }}">{{ $title }}</option>
+                        @endforeach
+                        <option value="100">その他</option>
                     </select>
                 </div>
                 <div class="item">
@@ -68,7 +66,7 @@
 </nav>
 
 <div class="page-menu">
-    <a id="sch" href="#">スケジュール</a>
+    <a id="sch" href="{{ route('course.index', ["user_id" => $user->id]) }}">スケジュール</a>
     <a id="task" href="#">タスク一覧</a>
 </div>
 
@@ -92,67 +90,6 @@
 {{--            <h4>タスクを追加してください</h4>--}}
 {{--        </div>--}}
 {{--    </li>--}}
-{{--    <li class="list-group-item list-group-item-action">--}}
-{{--        <div class="task-list">--}}
-{{--            <div class="check">--}}
-{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
-{{--            </div>--}}
-{{--            <div class="task-left">--}}
-{{--                <h5>レポート提出</h5>--}}
-{{--                <h6>科目名</h6>--}}
-{{--            </div>--}}
-{{--            <div class="task-right">--}}
-{{--                <h5>残り2日</h5>--}}
-{{--                <h6>6/24</h6>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </li>--}}
-{{--    <li class="list-group-item list-group-item-action">--}}
-{{--        <div class="task-list">--}}
-{{--            <div class="check">--}}
-{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
-{{--            </div>--}}
-{{--            <div class="task-left">--}}
-{{--                <h5>レポート提出</h5>--}}
-{{--                <h6>科目名</h6>--}}
-{{--            </div>--}}
-{{--            <div class="task-right">--}}
-{{--                <h5>残り2日</h5>--}}
-{{--                <h6>6/24</h6>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </li>--}}
-{{--    <li class="list-group-item list-group-item-action">--}}
-{{--        <div class="task-list">--}}
-{{--            <div class="check">--}}
-{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
-{{--            </div>--}}
-{{--            <div class="task-left">--}}
-{{--                <h5>レポート提出</h5>--}}
-{{--                <h6>科目名</h6>--}}
-{{--            </div>--}}
-{{--            <div class="task-right">--}}
-{{--                <h5>残り2日</h5>--}}
-{{--                <h6>6/24</h6>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </li>--}}
-{{--    <li class="list-group-item list-group-item-action">--}}
-{{--        <div class="task-list">--}}
-{{--            <div class="check">--}}
-{{--                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">--}}
-{{--            </div>--}}
-{{--            <div class="task-left">--}}
-{{--                <h5>レポート提出</h5>--}}
-{{--                <h6>科目名</h6>--}}
-{{--            </div>--}}
-{{--            <div class="task-right">--}}
-{{--                <h5>残り2日</h5>--}}
-{{--                <h6>6/24</h6>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </li>--}}
-</ul>
 
 <!-- flatpickrスクリプト -->
 <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
