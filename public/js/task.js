@@ -8,7 +8,10 @@ if(Laravel.tasks.length === 0) {
     $('#task-default').css('display', 'none');
 }
 
+// コードが冗長的になりすぎてる
 // todo task['task_id']がたくさん使われているから変数に入れて置換
+// todo functionでまとめられそうなやつがある(取消線とか)
+
 // タスク一覧を表示
 for (const task of Laravel.tasks) {
     // due_dateのフォーマットを変える
@@ -42,7 +45,7 @@ for (const task of Laravel.tasks) {
         `                <h6>${task['course']}</h6>\n` +
         '            </div>\n' +
         '            <div class="task-right">\n' +
-        `                <h5 id="remaining">残り${remaining_day}日</h5>\n` +
+        `                <h5 class="remaining" data-remaining-day="${remaining_day}">残り${remaining_day}日</h5>\n` +
         `                <h6>${task['due_date']}</h6>\n` +
         '            </div>\n' +
         '        </div>\n' +
@@ -61,9 +64,27 @@ for (const task of Laravel.tasks) {
 
     // statusが2(完了)ならチェックボックスにチェック入れて取消線
     if(task['status'] === 2) {
-        $(`#${task['task_id']} .check .checkbox`).attr('checked', true).prop('checked', true).change();
-        $(`#${task['task_id']}`).children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'line-through');
+        $(`#${task['task_id']} .check .checkbox`).prop('checked', true).change();
+        $(`#${task['task_id']}`).children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
+        $(`#${task['task_id']}`).children('.task-right').children('h6').css('text-decoration-line', 'line-through');
+        $(`#${task['task_id']}`).children('.task-right').children('h5').text('完了');
+        // remaining-dayに1000を足しておく(下に表示するため)
+        const remaining_day = $(`#${task['task_id']} .task-right .remaining`).data('remaining-day');
+        const add_1000 = Number(remaining_day) + 1000;
+        $(`#${task['task_id']} .task-right .remaining`).data('remaining-day', add_1000);
+        console.log($(`#${task['task_id']} .task-right .remaining`).data('remaining-day'));
     }
+
+    // タスクを残り日数順にソート（昇順）
+    // todo できなかった
+    // $('.list-group').html(
+    //     $('.list-group-item .task-right .remaining').sort(function(a, b) {
+    //         const x = Number($(a).data('remaining-day'));
+    //         const y = Number($(b).data('remaining-day'));
+    //         // 昇順
+    //         return x - y;
+    //     })
+    // );
 }
 
 // 追加ボタンが押されたら、空のモーダルを表示
@@ -72,7 +93,7 @@ $('#plus').click(function () {
     $('#input-course').val('0');
     $('#input-note').val('');
     $('#input-due').val('');
-    $('#input-status').removeAttr('checked').prop('checked', false).change();
+    $('#input-status').prop('checked', false).change();
 
     $('#btn-delete').hide();
     $('#btn-close').text('キャンセル');
@@ -95,10 +116,10 @@ $('.task-left, .task-right').click(function () {
     $('#input-due').val(target_task['due_date']);
     // statusが1なら「未完了」、2なら「完了」
     if(target_task['status'] === 1) {
-        $('#input-status').removeAttr('checked').prop('checked', false).change();
+        $('#input-status').prop('checked', false).change();
     }
     else if(target_task['status'] === 2) {
-        $('#input-status').attr('checked', true).prop('checked', true).change();
+        $('#input-status').prop('checked', true).change();
     }
 
     $('#btn-delete').show();
@@ -108,11 +129,23 @@ $('.task-left, .task-right').click(function () {
 })
 
 // チェックボックスのクリックで取り消し線のONとOFF
-// todo 期限のテキストが「完了」になるように。チェックを外すと元の期限日が表示
 $('.checkbox').change(function () {
+    // 残り日数を取得
+    const remaining_day = $(this).parents('.task-list').find('.remaining').data('remaining-day');
+    console.log(remaining_day)
+
     if($(this).is(':checked')) {
-        $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'line-through');
+        $(this).parents('.task-list').find('.remaining').text('完了');
+        $(this).parents('.task-list').children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
+        $(this).parents('.task-list').children('.task-right').children('h6').css('text-decoration-line', 'line-through');
+        // 完了済みのタスクは下に表示するために、remaining-dayに1000を足す
+        const add_1000 = Number(remaining_day) + 1000;
+        $(this).parents('.task-list').find('.remaining').data('remaining-day', `${add_1000}`);
     } else {
+        // 未完了のタスクは上に表示するために、remaining-dayから1000を引く
         $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'none');
+        const sub_1000 = Number(remaining_day) - 1000;
+        $(this).parents('.task-list').find('.remaining').data('remaining-day', `${sub_1000}`);
+        $(this).parents('.task-list').find('.remaining').text(`残り${sub_1000}日`);
     }
 })
