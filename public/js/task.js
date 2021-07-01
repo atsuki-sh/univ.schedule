@@ -55,11 +55,11 @@ for (const task of Laravel.tasks) {
     // いろいろと修正
     // 期限日当日の場合、期限日を過ぎた場合（remaining_dayがマイナス）
     if(remaining_day === 0) {
-        $(`#${task['task_id']} #remaining`).text('今日');
+        $(`#${task['task_id']} .remaining`).text('今日');
     }
     else if(remaining_day < 0) {
         // プラスにする
-        $(`#${task['task_id']} #remaining`).text(`${-1 * remaining_day}日前`);
+        $(`#${task['task_id']} .remaining`).text(`${-1 * remaining_day}日前`);
     }
 
     // statusが2(完了)ならチェックボックスにチェック入れて取消線
@@ -68,23 +68,10 @@ for (const task of Laravel.tasks) {
         $(`#${task['task_id']}`).children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
         $(`#${task['task_id']}`).children('.task-right').children('h6').css('text-decoration-line', 'line-through');
         $(`#${task['task_id']}`).children('.task-right').children('h5').text('完了');
-        // remaining-dayに1000を足しておく(下に表示するため)
-        const remaining_day = $(`#${task['task_id']} .task-right .remaining`).data('remaining-day');
-        const add_1000 = Number(remaining_day) + 1000;
-        $(`#${task['task_id']} .task-right .remaining`).data('remaining-day', add_1000);
-        console.log($(`#${task['task_id']} .task-right .remaining`).data('remaining-day'));
     }
 
     // タスクを残り日数順にソート（昇順）
     // todo できなかった
-    // $('.list-group').html(
-    //     $('.list-group-item .task-right .remaining').sort(function(a, b) {
-    //         const x = Number($(a).data('remaining-day'));
-    //         const y = Number($(b).data('remaining-day'));
-    //         // 昇順
-    //         return x - y;
-    //     })
-    // );
 }
 
 // 追加ボタンが押されたら、空のモーダルを表示
@@ -132,20 +119,21 @@ $('.task-left, .task-right').click(function () {
 $('.checkbox').change(function () {
     // 残り日数を取得
     const remaining_day = $(this).parents('.task-list').find('.remaining').data('remaining-day');
-    console.log(remaining_day)
 
     if($(this).is(':checked')) {
         $(this).parents('.task-list').find('.remaining').text('完了');
         $(this).parents('.task-list').children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
         $(this).parents('.task-list').children('.task-right').children('h6').css('text-decoration-line', 'line-through');
-        // 完了済みのタスクは下に表示するために、remaining-dayに1000を足す
-        const add_1000 = Number(remaining_day) + 1000;
-        $(this).parents('.task-list').find('.remaining').data('remaining-day', `${add_1000}`);
     } else {
-        // 未完了のタスクは上に表示するために、remaining-dayから1000を引く
         $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'none');
-        const sub_1000 = Number(remaining_day) - 1000;
-        $(this).parents('.task-list').find('.remaining').data('remaining-day', `${sub_1000}`);
-        $(this).parents('.task-list').find('.remaining').text(`残り${sub_1000}日`);
+        if(remaining_day === 0) {
+            $(this).parents('.task-list').find('.remaining').text('今日');
+        }
+        else if(remaining_day < 0) {
+            // プラスにする
+            $(this).parents('.task-list').find('.remaining').text(`${-1 * remaining_day}日前`);
+        } else {
+            $(this).parents('.task-list').find('.remaining').text(`残り${remaining_day}日`);
+        }
     }
 })
