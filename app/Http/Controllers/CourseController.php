@@ -27,12 +27,12 @@ class CourseController extends Controller
         if($user_id === $auth_id) {
             $user = User::find($user_id);
             $courses = User::find($user_id)->courses;
-            $urls = array(
-                'index' => url("{$user_id}/schedule"),
-                'create' => url("{$user_id}/schedule/create"),
-                'update' => url("{$user_id}/schedule/update"),
-                'delete' => url("{$user_id}/schedule/delete"),
-            );
+            $urls = [
+                'index' => route('course.index', ['user_id' => $auth_id]),
+                'create' => route('course.create', ['user_id' => $auth_id]),
+                'update' => route('course.update', ['user_id' => $auth_id]),
+                'delete' => route('course.delete', ['user_id' => $auth_id]),
+            ];
 
             // コースをscheduleテンプレートに渡し、scheduleを表示
             return view('schedule', ['courses'=>$courses, 'user'=>$user, 'urls'=>$urls]);

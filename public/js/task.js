@@ -177,6 +177,7 @@ $('#btn-submit').click(function () {
 
             .done((res) => {
                 console.log(res.message);
+                setTimeout('location.reload()', 1000);
             })
 
             .fail((error) => {
@@ -200,6 +201,7 @@ $('#btn-submit').click(function () {
 
             .done((res) => {
                 console.log(res.message);
+                setTimeout('location.reload()', 1000);
             })
 
             .fail((error) => {
@@ -219,6 +221,7 @@ $('#btn-delete').click(function () {
 
         .done((res) => {
             console.log(res.message);
+            setTimeout('location.reload()', 1000);
         })
 
         .fail((error) => {

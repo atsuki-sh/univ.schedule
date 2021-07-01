@@ -17,7 +17,7 @@ class CreateCoursesTable extends Migration
             $table->foreignId('user_id');
             $table->integer('course_index');
             $table->string('title');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->string('place');
             $table->string('teacher');
             $table->timestamps();

@@ -19,7 +19,7 @@ class CreateTasksTable extends Migration
             $table->id('task_id');
             $table->string('title');
             $table->string('course');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->date('due_date');
             $table->integer('status');
             $table->timestamps();
