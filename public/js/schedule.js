@@ -141,7 +141,7 @@ $('#btn-delete').click(function() {
         })
         // 通信に失敗したとき
         .fail((error)=>{
-            console.log(error.statusText);
+            console.log(error);
         })
 });
 

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>タスク一覧</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
@@ -46,7 +47,7 @@
                 <div class="item">
                     {{-- ステータススイッチ --}}
                     <i class="far fa-check-square fa-lg fa-fw"></i>
-                    <input id="input-status" type="checkbox" data-toggle="toggle" data-width="100px" data-on="完了" data-off="未完了" data-onstyle="success" data-offstyle="danger">
+                    <input id="input-status" value="" type="checkbox" data-toggle="toggle" data-width="100px" data-on="完了" data-off="未完了" data-onstyle="success" data-offstyle="danger">
                 </div>
             </div>
             <div class="modal-footer">
@@ -115,6 +116,7 @@
 <script>
     window.Laravel = {};
     window.Laravel.tasks = @json($tasks);
+    window.Laravel.urls = @json($urls);
 </script>
 <script src="{{ asset('js/task.js') }}"></script>
 </body>

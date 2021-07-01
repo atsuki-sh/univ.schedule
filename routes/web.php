@@ -30,6 +30,12 @@ Route::post('/{user_id}/schedule/delete', [CourseController::class, 'delete'])->
 
 // タスク画面の表示
 Route::get('/{user_id}/task', [TaskController::class, 'show'])->name('task.index');
+// タスク作成
+Route::post('/{user_id}/task/create', [TaskController::class, 'create'])->name('task.create');
+// タスク編集
+Route::post('/{user_id}/task/update', [TaskController::class, 'update'])->name('task.update');
+// タスク削除
+Route::post('/{user_id}/task/delete', [TaskController::class, 'delete'])->name('task.delete');
 
 Auth::routes();
 

@@ -1,5 +1,13 @@
 // ログイン中のユーザーのタスクを受け取る
 console.log(Laravel.tasks);
+console.log(Laravel.urls);
+
+// POST通信のためにCSRFトークンを発行
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 // タスクがなかったらtask-defaultを表示、あるなら隠す
 if(Laravel.tasks.length === 0) {
@@ -86,11 +94,13 @@ $('#plus').click(function () {
     $('#btn-close').text('キャンセル');
 
     $('#exampleModal').modal('show');
+    $('#exampleModal').addClass('empty');
 })
 
 // タスクがクリックされたら、クリックされたタスクのデータをモーダルに表示
 $('.task-left, .task-right').click(function () {
     const $id = $(this).parents('.task-list').attr('id');
+    $('#exampleModal').data('task_id', $id);
 
     // target_taskがクリックされたタスクのデータ
     const target_task = Laravel.tasks.find(
@@ -104,15 +114,26 @@ $('.task-left, .task-right').click(function () {
     // statusが1なら「未完了」、2なら「完了」
     if(target_task['status'] === 1) {
         $('#input-status').prop('checked', false).change();
+        $('#input-status').val(1);
     }
     else if(target_task['status'] === 2) {
         $('#input-status').prop('checked', true).change();
+        $('#input-status').val(2);
     }
 
     $('#btn-delete').show();
     $('#btn-close').text('閉じる');
 
     $('#exampleModal').modal('show');
+    $('#exampleModal').removeClass('empty');
+})
+
+$('#input-status').change(function () {
+    if($(this).is(':checked')) {
+        $(this).val(2);
+    } else {
+        $(this).val(1);
+    }
 })
 
 // チェックボックスのクリックで取り消し線のONとOFF
@@ -136,4 +157,71 @@ $('.checkbox').change(function () {
             $(this).parents('.task-list').find('.remaining').text(`残り${remaining_day}日`);
         }
     }
+})
+
+$('#btn-submit').click(function () {
+    // 作成
+    if($('#exampleModal').hasClass('empty')) {
+        $.ajax({
+            type: 'post',
+            url: Laravel.urls['create'],
+            data: {
+                course_index: $('#input-course').val(),
+                course: $('#input-course option:selected').text(),
+                title: $('#input-title').val(),
+                note: $('#input-note').val(),
+                due_date: $('#input-due').val(),
+                status: Number($('#input-status').val()),
+            },
+        })
+
+            .done((res) => {
+                console.log(res.message);
+            })
+
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    // 編集
+    else {
+        $.ajax({
+            type: 'post',
+            url: Laravel.urls['update'],
+            data: {
+                course_index: $('#input-course').val(),
+                course: $('#input-course option:selected').text(),
+                title: $('#input-title').val(),
+                note: $('#input-note').val(),
+                due_date: $('#input-due').val(),
+                status: Number($('#input-status').val()),
+            },
+        })
+
+            .done((res) => {
+                console.log(res.message);
+            })
+
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+})
+
+$('#btn-delete').click(function () {
+    $.ajax({
+        type: 'post',
+        url: Laravel.urls['delete'],
+        data: {
+            task_id: $('#exampleModal').data('task_id'),
+        },
+    })
+
+        .done((res) => {
+            console.log(res.message);
+        })
+
+        .fail((error) => {
+            console.log(error);
+        })
 })
