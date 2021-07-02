@@ -138,14 +138,37 @@ $('#input-status').change(function () {
 
 // チェックボックスのクリックで取り消し線のONとOFF
 $('.checkbox').change(function () {
+    // クリックされたチェックボックスのタスクidを取得
+    const $id = $(this).parents('.task-list').attr('id');
+    const target_task = Laravel.tasks.find(
+        (task) => String(task['task_id']) === $id);
+
     // 残り日数を取得
     const remaining_day = $(this).parents('.task-list').find('.remaining').data('remaining-day');
 
     if($(this).is(':checked')) {
         $(this).parents('.task-list').find('.remaining').text('完了');
+        // 取消線を引く
         $(this).parents('.task-list').children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
         $(this).parents('.task-list').children('.task-right').children('h6').css('text-decoration-line', 'line-through');
-    } else {
+
+        // ajaxでstatusを送信
+        $.ajax({
+            url: Laravel.urls['update_status'],
+            type: 'post',
+            data: {
+                status: 2,
+                course_index: target_task['course_index'],
+            }
+        })
+            .done(() => {
+                console.log('ok!');
+                setTimeout('location.reload()', 1000);
+            })
+    }
+
+    else {
+        // 取消線を引く
         $(this).parents('.task-list').children('.task-left, .task-right').children('h5, h6').css('text-decoration-line', 'none');
         if(remaining_day === 0) {
             $(this).parents('.task-list').find('.remaining').text('今日');
@@ -156,6 +179,21 @@ $('.checkbox').change(function () {
         } else {
             $(this).parents('.task-list').find('.remaining').text(`残り${remaining_day}日`);
         }
+
+        // ajaxでstatusを送信
+        $.ajax({
+            url: Laravel.urls['update_status'],
+            type: 'post',
+            data: {
+                status: 1,
+                course_index: target_task['course_index'],
+            }
+        })
+
+            .done(() => {
+                console.log('ok!');
+                setTimeout('location.reload()', 1000);
+            })
     }
 })
 
@@ -176,9 +214,10 @@ $('#btn-submit').click(function () {
         })
 
             .done((res) => {
-                console.log(res.message);
                 $('.alert').hide();
                 setTimeout('location.reload()', 1000);
+                // todo loadでリロードできなかった
+                // $('.list-group').load(`${Laravel.urls['index']} .list-group`);
             })
 
             .fail((xhr, textStatus, errorThrown) => {
@@ -205,9 +244,9 @@ $('#btn-submit').click(function () {
         })
 
             .done((res) => {
-                console.log(res.message);
                 $('.alert').hide();
                 setTimeout('location.reload()', 1000);
+                // $('.list-group').load(`${Laravel.urls['index']} `);
             })
 
             .fail((xhr, textStatus, errorThrown) => {
@@ -230,8 +269,8 @@ $('#btn-delete').click(function () {
     })
 
         .done((res) => {
-            console.log(res.message);
             setTimeout('location.reload()', 1000);
+            // $('.list-group').load(`${Laravel.urls['index']} .list-group`);
         })
 
         .fail((error) => {

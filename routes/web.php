@@ -34,6 +34,8 @@ Route::get('/{user_id}/task', [TaskController::class, 'show'])->name('task.index
 Route::post('/{user_id}/task/create', [TaskController::class, 'create'])->name('task.create');
 // タスク編集
 Route::post('/{user_id}/task/update', [TaskController::class, 'update'])->name('task.update');
+// status編集(チェックボックス)
+Route::post('/{user_id}/task/update_status', [TaskController::class, 'updateStatus'])->name('task.update.status');
 // タスク削除
 Route::post('/{user_id}/task/delete', [TaskController::class, 'delete'])->name('task.delete');
 

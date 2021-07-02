@@ -54,7 +54,7 @@
                 {{--                ボタン類--}}
                 <button type="button" class="btn btn-danger" id="btn-delete" data-dismiss="modal">削除</button>
                 <button type="button" class="btn btn-light" id="btn-close" data-dismiss="modal">閉じる</button>
-                <button type="button" class="btn btn-primary" id="btn-submit">完了</button>
+                <button type="button" class="btn btn-primary" id="btn-submit" data-dismiss="modal">完了</button>
             </div>
         </div>
     </div>

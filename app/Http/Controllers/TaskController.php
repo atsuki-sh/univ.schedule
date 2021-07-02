@@ -31,6 +31,7 @@ class TaskController extends Controller
                 'index' => route('task.index', ['user_id' => $auth_id]),
                 'create' => route('task.create', ['user_id' => $auth_id]),
                 'update' => route('task.update', ['user_id' => $auth_id]),
+                'update_status' => route('task.update.status', ['user_id' => $auth_id]),
                 'delete' => route('task.delete', ['user_id' => $auth_id]),
             ];
 
@@ -73,6 +74,16 @@ class TaskController extends Controller
             'title' => $request->title,
             'note' => $request->note,
             'due_date' => $request->due_date,
+            'status' => $request->status,
+            'updated_at' => Carbon::now(),
+        ]);
+    }
+
+    public function updateStatus($user_id, Request $request)
+    {
+        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
+
+        $task->update([
             'status' => $request->status,
             'updated_at' => Carbon::now(),
         ]);
