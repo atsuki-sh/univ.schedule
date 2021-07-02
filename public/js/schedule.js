@@ -86,7 +86,7 @@ $('#btn-submit').click(function() {
             // 通信に失敗したとき
             .fail((xhr, textStatus, errorThrown)=>{
                 // xhr.responseJSON.errorsに、バリデーションして返ってきたエラーが入っている
-                console.log(xhr.responseJSON.errors['title'][0]);
+                console.log(xhr.responseJSON.errors);
                 console.error(errorThrown);
 
                 $('.alert').text(xhr.responseJSON.errors['title'][0]);
@@ -116,7 +116,7 @@ $('#btn-submit').click(function() {
             // 通信に失敗したとき
             .fail((xhr, textStatus, errorThrown)=>{
                 // xhr.responseJSON.errorsに、バリデーションして返ってきたエラーが入っている
-                console.log(xhr.responseJSON.errors['title'][0]);
+                console.log(xhr.responseJSON.errors);
 
                 $('.alert').text(xhr.responseJSON.errors['title'][0]);
                 $('.alert').show();

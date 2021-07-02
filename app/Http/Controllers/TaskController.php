@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
@@ -47,10 +48,8 @@ class TaskController extends Controller
         }
     }
 
-    public function create($user_id, Request $request)
+    public function create($user_id, TaskRequest $request)
     {
-//        dump($request);
-
         $task = new Task();
 
         $task->user_id = $user_id;
@@ -64,7 +63,7 @@ class TaskController extends Controller
         $task->save();
     }
 
-    public function update($user_id, Request $request)
+    public function update($user_id, TaskRequest $request)
     {
         $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
 

@@ -24,10 +24,10 @@ if(Laravel.tasks.length === 0) {
 for (const task of Laravel.tasks) {
     // due_dateのフォーマットを変える
     task['due_date'] = task['due_date'].replace(/-/g, '/')
-    console.log(task['due_date']);
+    // console.log(task['due_date']);
 
     const dates = task['due_date'].split('/');
-    console.log(dates);
+    // console.log(dates);
 
     // ログインした日時をセット（時間は0:00）
     const today = new Date();
@@ -37,9 +37,9 @@ for (const task of Laravel.tasks) {
     today.setMilliseconds(0);
     // 期限をセット
     const due_date = new Date(dates[0], dates[1]-1, dates[2]);
-    console.log(today, due_date);
+    // console.log(today, due_date);
     const remaining_day = (due_date - today) / 86400000;
-    console.log(remaining_day);
+    // console.log(remaining_day);
 
     // タスクリストを追加
     const new_task =
@@ -177,11 +177,16 @@ $('#btn-submit').click(function () {
 
             .done((res) => {
                 console.log(res.message);
+                $('.alert').hide();
                 setTimeout('location.reload()', 1000);
             })
 
-            .fail((error) => {
-                console.log(error);
+            .fail((xhr, textStatus, errorThrown) => {
+                console.log(xhr.responseJSON.errors);
+                console.error(errorThrown);
+
+                $('.alert').text(xhr.responseJSON.errors['title'][0]);
+                $('.alert').show();
             })
     }
     // 編集
@@ -201,11 +206,16 @@ $('#btn-submit').click(function () {
 
             .done((res) => {
                 console.log(res.message);
+                $('.alert').hide();
                 setTimeout('location.reload()', 1000);
             })
 
-            .fail((error) => {
-                console.log(error);
+            .fail((xhr, textStatus, errorThrown) => {
+                console.log(xhr.responseJSON.errors);
+                console.error(errorThrown);
+
+                $('.alert').text(xhr.responseJSON.errors['title'][0]);
+                $('.alert').show();
             })
     }
 })
@@ -227,4 +237,8 @@ $('#btn-delete').click(function () {
         .fail((error) => {
             console.log(error);
         })
+})
+
+$('#btn-close').click(function () {
+    $('.alert').hide();
 })
