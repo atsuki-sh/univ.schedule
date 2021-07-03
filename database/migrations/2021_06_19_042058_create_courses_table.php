@@ -18,8 +18,8 @@ class CreateCoursesTable extends Migration
             $table->integer('course_index');
             $table->string('title');
             $table->text('note')->nullable();
-            $table->string('place');
-            $table->string('teacher');
+            $table->string('place')->nullable();
+            $table->string('teacher')->nullable();
             $table->timestamps();
         });
     }

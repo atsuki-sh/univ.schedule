@@ -11,12 +11,6 @@ $.ajaxSetup({
 
 // ページリロードのためのfunctionを定義
 // todo ajaxでリロードする
-function ajaxReload() {
-    $.ajax({
-        type: 'get',
-        url: Laravel.urls['index'],
-    });
-}
 
 // course_indexの位置のtdに、titleを出力する
 for (const course of Laravel.courses) {
@@ -29,6 +23,7 @@ let target_course;
 // tdがクリックされた時の処理
 $('td').click(function() {
     $('#exampleModal').modal('show');
+    $('.alert').hide();
 
     // 後で使えるよう、クリックされたtdのid(course_index)を保存しておく
     const $id = $(this).attr('id');
@@ -58,7 +53,6 @@ $('td').click(function() {
         $('#input-place').val(target_course['place']);
         $('#input-teacher').val(target_course['teacher']);
     }
-
 });
 
 // 編集・作成データの送信（ajax）
@@ -78,16 +72,13 @@ $('#btn-submit').click(function() {
         })
             // 通信に成功したとき
             .done((res)=>{
-                console.log(res.message);
-                // ajaxReload();
-                $('.alert').hide();
+                $('#exampleModal').modal('hide');
                 setTimeout('location.reload()', 1000);
             })
             // 通信に失敗したとき
             .fail((xhr, textStatus, errorThrown)=>{
                 // xhr.responseJSON.errorsに、バリデーションして返ってきたエラーが入っている
                 console.log(xhr.responseJSON.errors);
-                console.error(errorThrown);
 
                 $('.alert').text(xhr.responseJSON.errors['title'][0]);
                 $('.alert').show();
@@ -108,9 +99,7 @@ $('#btn-submit').click(function() {
         })
             // 通信に成功したとき
             .done((res)=>{
-                console.log(res.message);
-                // ajaxReload();
-                $('.alert').hide();
+                $('#exampleModal').modal('hide');
                 setTimeout('location.reload()', 1000);
             })
             // 通信に失敗したとき
@@ -135,30 +124,10 @@ $('#btn-delete').click(function() {
     })
         // 通信に成功したとき
         .done((res)=>{
-            console.log(res.message);
-            // ajaxReload();
             setTimeout('location.reload()', 1000);
         })
         // 通信に失敗したとき
         .fail((error)=>{
             console.log(error);
         })
-});
-
-// 閉じるボタンが押されたときは入力値を戻す
-$('#btn-close').click(function() {
-    if($('.modal').hasClass('empty')) {
-        $('#input-title').val('');
-        $('#input-note').val('');
-        $('#input-place').val('');
-        $('#input-teacher').val('');
-    } else {
-        $('#input-title').val(target_course['title']);
-        $('#input-note').val(target_course['note']);
-        $('#input-place').val(target_course['place']);
-        $('#input-teacher').val(target_course['teacher']);
-    }
-
-    $('#btn-submit').data('dismiss', '');
-    $('.alert').hide();
 });

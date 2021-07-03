@@ -37,7 +37,7 @@
             <div class="modal-header">
                 {{--                タイトル--}}
                 <div class="alert alert-danger" id="alert-title"></div>
-                <input type="text" class="modal-input h5" id="input-title" placeholder="タイトルを入力" value="">
+                <input type="text" class="modal-input h5" id="input-title" data-index="" placeholder="タイトルを入力" value="">
             </div>
             <div class="modal-body">
                 @yield('modal-body')
