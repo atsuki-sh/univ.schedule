@@ -1,0 +1,104 @@
+* {
+    box-sizing: border-box;
+}
+
+/*ナビ*/
+nav {
+    margin-bottom: 30px;
+    background-color: #e3f2fd;
+}
+
+/*ページメニュー*/
+.page-menu {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.page-menu a {
+    color: black;
+    margin-right: 30px;
+    font-size: large;
+    text-decoration: none;
+}
+
+/*モーダル*/
+/* モーダルを上からスライドではなくフェードインさせる */
+.modal.fade:not(.show) .modal-dialog {
+    transform: translate(0,0) scale(0.8);
+}
+
+.modal-body {
+    padding: 12px 28px;
+}
+
+.modal-header {
+    display: block;
+}
+
+.alert {
+    display: none;
+    padding: 4px;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.modal-input:hover {
+    border: 1px solid #1abc9c;
+}
+
+.modal-input:focus {
+    box-shadow: 0 0 7px #1abc9c;
+    border: 1px solid #1abc9c;
+}
+
+#input-title {
+    margin-bottom: 0;
+}
+
+.item {
+    display: flex;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.item:last-of-type {
+    margin-bottom: 0;
+}
+
+.fas, .far{
+    margin-right: 6px;
+}
+
+/* 削除ボタンだけ左寄せ */
+.modal-footer {
+    justify-content: flex-end;
+}
+.modal-footer >:first-child {
+    margin-right: auto;
+}
+
+#btn-delete {
+    color: red;
+    background-color: white;
+    border: none;
+}
+
+#btn-delete:hover {
+    color: white;
+    background-color: red;
+    border: 1px solid red;
+}
