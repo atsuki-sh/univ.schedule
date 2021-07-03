@@ -19,7 +19,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 {{--                タイトル--}}
-                <div class="alert alert-danger"></div>
+                <div class="alert alert-danger" id="alert-title"></div>
                 <input type="text" class="modal-input h5" id="input-title" data-index="" placeholder="タイトルを入力" value="">
             </div>
             <div class="modal-body">
@@ -39,6 +39,7 @@
                     <i class="fas fa-pen fa-lg fa-fw"></i>
                     <textarea class="modal-input" id="input-note" placeholder="メモを入力" rows="3"></textarea>
                 </div>
+                <div class="alert alert-danger" id="alert-due_date"></div>
                 <div class="item">
                     {{--                    期限--}}
                     <i class="far fa-calendar-alt fa-lg fa-fw"></i>
@@ -54,7 +55,7 @@
                 {{--                ボタン類--}}
                 <button type="button" class="btn btn-danger" id="btn-delete" data-dismiss="modal">削除</button>
                 <button type="button" class="btn btn-light" id="btn-close" data-dismiss="modal">閉じる</button>
-                <button type="button" class="btn btn-primary" id="btn-submit" data-dismiss="modal">完了</button>
+                <button type="button" class="btn btn-primary" id="btn-submit">完了</button>
             </div>
         </div>
     </div>

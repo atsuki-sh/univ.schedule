@@ -66,7 +66,8 @@ class TaskController extends Controller
 
     public function update($user_id, TaskRequest $request)
     {
-        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
+//        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
+        $task = Task::where('task_id', $request->task_id);
 
         $task->update([
             'course_index' => $request->course_index,
@@ -81,7 +82,8 @@ class TaskController extends Controller
 
     public function updateStatus($user_id, Request $request)
     {
-        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
+//        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
+        $task = Task::where('task_id', $request->task_id);
 
         $task->update([
             'status' => $request->status,
@@ -91,7 +93,7 @@ class TaskController extends Controller
 
     public function delete($user_id, Request $request)
     {
-        $task = User::find($user_id)->tasks()->where('task_id', $request->task_id);
+        $task = Task::where('task_id', $request->task_id);
         $task->delete();
     }
 }

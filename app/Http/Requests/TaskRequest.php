@@ -39,6 +39,7 @@ class TaskRequest extends FormRequest
     {
         return [
             'title' => 'required',
+            'due_date' => 'required',
         ];
     }
 
@@ -46,6 +47,7 @@ class TaskRequest extends FormRequest
     {
         return [
             'title' => 'タイトル',
+            'due_date' => '期限日',
         ];
     }
 }

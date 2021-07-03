@@ -92,6 +92,7 @@ $('#plus').click(function () {
 
     $('#btn-delete').hide();
     $('#btn-close').text('キャンセル');
+    $('.alert').hide();
 
     $('#exampleModal').modal('show');
     $('#exampleModal').addClass('empty');
@@ -123,6 +124,7 @@ $('.task-left, .task-right').click(function () {
 
     $('#btn-delete').show();
     $('#btn-close').text('閉じる');
+    $('.alert').hide();
 
     $('#exampleModal').modal('show');
     $('#exampleModal').removeClass('empty');
@@ -157,6 +159,7 @@ $('.checkbox').change(function () {
             url: Laravel.urls['update_status'],
             type: 'post',
             data: {
+                task_id: target_task['task_id'],
                 status: 2,
                 course_index: target_task['course_index'],
             }
@@ -184,7 +187,8 @@ $('.checkbox').change(function () {
         $.ajax({
             url: Laravel.urls['update_status'],
             type: 'post',
-            data: {
+            data:{
+                task_id: target_task['task_id'],
                 status: 1,
                 course_index: target_task['course_index'],
             }
@@ -214,7 +218,7 @@ $('#btn-submit').click(function () {
         })
 
             .done((res) => {
-                $('.alert').hide();
+                $('#exampleModal').modal('hide');
                 setTimeout('location.reload()', 1000);
                 // todo loadでリロードできなかった
                 // $('.list-group').load(`${Laravel.urls['index']} .list-group`);
@@ -224,8 +228,13 @@ $('#btn-submit').click(function () {
                 console.log(xhr.responseJSON.errors);
                 console.error(errorThrown);
 
-                $('.alert').text(xhr.responseJSON.errors['title'][0]);
-                $('.alert').show();
+                $('.alert').hide();
+
+                // エラーが出た項目にだけエラーを表示
+                for (const key of Object.keys(xhr.responseJSON.errors)) {
+                    $(`#alert-${key}`).text(xhr.responseJSON.errors[`${key}`][0]);
+                    $(`#alert-${key}`).show();
+                }
             })
     }
     // 編集
@@ -234,6 +243,7 @@ $('#btn-submit').click(function () {
             type: 'post',
             url: Laravel.urls['update'],
             data: {
+                task_id: $('#exampleModal').data('task_id'),
                 course_index: $('#input-course').val(),
                 course: $('#input-course option:selected').text(),
                 title: $('#input-title').val(),
@@ -244,7 +254,7 @@ $('#btn-submit').click(function () {
         })
 
             .done((res) => {
-                $('.alert').hide();
+                $('#exampleModal').modal('hide');
                 setTimeout('location.reload()', 1000);
                 // $('.list-group').load(`${Laravel.urls['index']} `);
             })
@@ -253,8 +263,8 @@ $('#btn-submit').click(function () {
                 console.log(xhr.responseJSON.errors);
                 console.error(errorThrown);
 
-                $('.alert').text(xhr.responseJSON.errors['title'][0]);
-                $('.alert').show();
+                $('#alert-title').text(xhr.responseJSON.errors['title'][0]);
+                $('#alert-title').show();
             })
     }
 })
@@ -276,8 +286,4 @@ $('#btn-delete').click(function () {
         .fail((error) => {
             console.log(error);
         })
-})
-
-$('#btn-close').click(function () {
-    $('.alert').hide();
 })
