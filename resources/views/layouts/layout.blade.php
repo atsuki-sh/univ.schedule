@@ -14,9 +14,9 @@
 <body>
 {{--ナビバー--}}
 <nav class="navbar">
-    <span class="navbar-brand mb-0 h1">スケジュール管理アプリ</span>
-    <p>こんにちは！{{ $user->name }}さん</p>
-    <a href="{{ route('logout') }}"
+    <span class="nav-item navbar-brand mb-0 h1">スケジュール管理アプリ</span>
+    <span class="nav-item">こんにちは！{{ $user->name }}さん</span>
+    <a href="{{ route('logout') }}" class="nav-item" id="logout"
        onclick="event.preventDefault();
        document.getElementById('logout-form').submit();">
         ログアウト

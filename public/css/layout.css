@@ -3,9 +3,28 @@
 }
 
 /*ナビ*/
-nav {
+.navbar {
     margin-bottom: 30px;
+    padding: 0;
     background-color: #e3f2fd;
+}
+
+.nav-item {
+    padding: 10px;
+    margin: 0 16px 0 16px;
+}
+
+#logout {
+    display: block;
+    padding: 16px 10px 16px 10px;
+    color: black;
+    /*border: 1px solid black;*/
+}
+
+#logout:hover {
+    transition-duration: 0.3s;
+    background-color: #b8defa;
+    text-decoration: none;
 }
 
 /*ページメニュー*/
