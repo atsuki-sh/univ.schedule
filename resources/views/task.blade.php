@@ -45,7 +45,7 @@
 @endsection
 
 @section('content')
-    <ul class="list-group">
+    <ul class="list-group" id="tasks">
         <div class="list-head">
             <div class="button" id="plus">
                 <i class="far fa-plus-square fa-2x"></i>

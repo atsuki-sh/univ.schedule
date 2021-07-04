@@ -18,7 +18,7 @@ class TaskController extends Controller
         $this->middleware('auth');
     }
 
-    public function show($user_id)
+    public function show(Request $request, $user_id)
     {
         $auth_id = strval(Auth::id());
 
@@ -62,11 +62,12 @@ class TaskController extends Controller
         $task->status = $request->status;
 
         $task->save();
+
+        return response()->json(['tasks' => User::find($user_id)->tasks]);
     }
 
     public function update($user_id, TaskRequest $request)
     {
-//        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
         $task = Task::where('task_id', $request->task_id);
 
         $task->update([
@@ -78,22 +79,27 @@ class TaskController extends Controller
             'status' => $request->status,
             'updated_at' => Carbon::now(),
         ]);
+
+        return response()->json(['tasks' => User::find($user_id)->tasks]);
     }
 
     public function updateStatus($user_id, Request $request)
     {
-//        $task = User::find($user_id)->tasks()->where('course_index', $request->course_index);
         $task = Task::where('task_id', $request->task_id);
 
         $task->update([
             'status' => $request->status,
             'updated_at' => Carbon::now(),
         ]);
+
+        return response()->json(['tasks' => User::find($user_id)->tasks]);
     }
 
     public function delete($user_id, Request $request)
     {
         $task = Task::where('task_id', $request->task_id);
         $task->delete();
+
+        return response()->json(['tasks' => User::find($user_id)->tasks]);
     }
 }

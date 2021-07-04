@@ -2,6 +2,7 @@
 console.log(Laravel.tasks);
 console.log(Laravel.urls);
 
+// todo ajax通信を全部変えておく
 
 // POST通信のためにCSRFトークンを発行
 $.ajaxSetup({
@@ -11,6 +12,14 @@ $.ajaxSetup({
 });
 
 
+function ajaxReload(response) {
+    $('#exampleModal').modal('hide');
+    console.log(response);
+    $('.task-item').remove();
+    createTasks(response);
+}
+
+
 // タスクがなかったらtask-defaultを表示、あるなら隠す
 if(Laravel.tasks.length === 0) {
     $('#task-default').css('display', 'flex');
@@ -18,72 +27,73 @@ if(Laravel.tasks.length === 0) {
     $('#task-default').css('display', 'none');
 }
 
+function createTasks(tasks) {
+    // タスク一覧を表示
+    for (const task of tasks) {
+        const id = task['task_id'];
 
-// タスク一覧を表示
-for (const task of Laravel.tasks) {
-    const id = task['task_id'];
+        // due_dateのフォーマットを変える
+        // y-m-d を y/m/d に
+        task['due_date'] = task['due_date'].replace(/-/g, '/')
+        const dates = task['due_date'].split('/');
 
-    // due_dateのフォーマットを変える
-    // y-m-d を y/m/d に
-    task['due_date'] = task['due_date'].replace(/-/g, '/')
-    const dates = task['due_date'].split('/');
+        // 今日の日付をセット（時間は0:00に）
+        const today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+        // 期限をセット
+        const due_date = new Date(dates[0], dates[1]-1, dates[2]);
+        // 期限日から今日の日付を引いて残り日数を計算
+        const remaining_day = (due_date - today) / 86400000;
 
-    // 今日の日付をセット（時間は0:00に）
-    const today = new Date();
-    today.setHours(0);
-    today.setMinutes(0);
-    today.setSeconds(0);
-    today.setMilliseconds(0);
-    // 期限をセット
-    const due_date = new Date(dates[0], dates[1]-1, dates[2]);
-    // 期限日から今日の日付を引いて残り日数を計算
-    const remaining_day = (due_date - today) / 86400000;
-
-    // タスクリストを追加
-    const new_task =
-        `<li class="list-group-item list-group-item-action">\n` +
-        `        <div class="task-list" id="${id}">\n` +
-        '            <div class="check">\n' +
-        `                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">\n` +
-        '            </div>\n' +
-        '            <div class="task-left">\n' +
-        `                <h5>${task['title']}</h5>\n` +
-        `                <h6>${task['course']}</h6>\n` +
-        '            </div>\n' +
-        '            <div class="task-right">\n' +
-        `                <h5 class="remaining" data-remaining-day="${remaining_day}">残り${remaining_day}日</h5>\n` +
-        `                <h6>${task['due_date']}</h6>\n` +
-        '            </div>\n' +
-        '        </div>\n' +
-        '    </li>';
-    $('.list-group').append(new_task);
+        // タスクリストを追加
+        const new_task =
+            `<li class="list-group-item list-group-item-action task-item">\n` +
+            `        <div class="task-list" id="${id}">\n` +
+            '            <div class="check">\n' +
+            `                <input class="checkbox" type="checkbox" style="transform:scale(2.0);">\n` +
+            '            </div>\n' +
+            '            <div class="task-left">\n' +
+            `                <h5>${task['title']}</h5>\n` +
+            `                <h6>${task['course']}</h6>\n` +
+            '            </div>\n' +
+            '            <div class="task-right">\n' +
+            `                <h5 class="remaining" data-remaining-day="${remaining_day}">残り${remaining_day}日</h5>\n` +
+            `                <h6>${task['due_date']}</h6>\n` +
+            '            </div>\n' +
+            '        </div>\n' +
+            '    </li>';
+        $('.list-group').append(new_task);
 
 
-    // データをいろいろと修正
+        // データをいろいろと修正
 
-    // 期限日当日の場合、期限日を過ぎた場合で残り日数のテキストを変える
-    // 当日の場合
-    if(remaining_day === 0) {
-        $(`#${id} .remaining`).text('今日');
+        // 期限日当日の場合、期限日を過ぎた場合で残り日数のテキストを変える
+        // 当日の場合
+        if(remaining_day === 0) {
+            $(`#${id} .remaining`).text('今日');
+        }
+        // 期限日を過ぎた場合
+        else if(remaining_day < 0) {
+            // プラスにして「何日前」で表示
+            $(`#${id} .remaining`).text(`${-1 * remaining_day}日前`);
+        }
+
+        // statusが2(完了)ならチェックボックスにチェック入れて取消線
+        if(task['status'] === 2) {
+            $(`#${id} .check .checkbox`).prop('checked', true).change();
+            $(`#${id}`).children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
+            $(`#${id}`).children('.task-right').children('h6').css('text-decoration-line', 'line-through');
+            $(`#${id}`).children('.task-right').children('h5').text('完了');
+        }
+
+        // todo できなかった
     }
-    // 期限日を過ぎた場合
-    else if(remaining_day < 0) {
-        // プラスにして「何日前」で表示
-        $(`#${id} .remaining`).text(`${-1 * remaining_day}日前`);
-    }
-
-    // statusが2(完了)ならチェックボックスにチェック入れて取消線
-    if(task['status'] === 2) {
-        $(`#${id} .check .checkbox`).prop('checked', true).change();
-        $(`#${id}`).children('.task-left').children('h5, h6').css('text-decoration-line', 'line-through');
-        $(`#${id}`).children('.task-right').children('h6').css('text-decoration-line', 'line-through');
-        $(`#${id}`).children('.task-right').children('h5').text('完了');
-    }
-
-    // タスクを残り日数順にソート（昇順）
-    // todo できなかった
 }
 
+createTasks(Laravel.tasks);
 
 // 追加ボタンが押されたら、空のモーダルを表示
 $('#plus').click(function () {
@@ -103,7 +113,7 @@ $('#plus').click(function () {
 
 
 // タスクがクリックされたら、クリックされたタスクのデータをモーダルに表示
-$('.task-left, .task-right').click(function () {
+$(document).on('click', '.task-left, .task-right', function () {
     // クリックされたタスクIDを取得
     const id = $(this).parents('.task-list').attr('id');
     // 後で使えるように保存しておく
@@ -118,7 +128,7 @@ $('.task-left, .task-right').click(function () {
     $('#input-course').val(target_task['course_index']);
     $('#input-note').val(target_task['note']);
     $('#input-due').val(target_task['due_date']);
-    // statusが２なら「未完了」、2なら「完了」
+    // statusが１なら「未完了」、2なら「完了」
     if(target_task['status'] === 1) {
         $('#input-status').prop('checked', false).change();
         $('#input-status').val(1);
@@ -138,17 +148,17 @@ $('.task-left, .task-right').click(function () {
 
 
 // toggleを押されたとき
-$('#input-status').change(function () {
-    if($(this).is(':checked')) {
-        $(this).val(2);
+$(document).on('click', '.toggle-group', function () {
+    if($('#input-status').is(':checked')) {
+        $('#input-status').val(1);
     } else {
-        $(this).val(1);
+        $('#input-status').val(2);
     }
 })
 
 
 // チェックボックスのクリックで取り消し線のONとOFF
-$('.checkbox').change(function () {
+$(document).on('click', '.checkbox', function () {
     // クリックされたチェックボックスのタスクidを取得
     const id = $(this).parents('.task-list').attr('id');
     const target_task = Laravel.tasks.find(
@@ -174,9 +184,9 @@ $('.checkbox').change(function () {
                 course_index: target_task['course_index'],
             }
         })
-            .done(() => {
-                console.log('ok!');
-                setTimeout('location.reload()', 1000);
+            .done((res) => {
+                Laravel.tasks = res.tasks;
+                ajaxReload(res.tasks);
             })
     }
 
@@ -206,15 +216,15 @@ $('.checkbox').change(function () {
             }
         })
 
-            .done(() => {
-                console.log('ok!');
-                setTimeout('location.reload()', 1000);
+            .done((res) => {
+                Laravel.tasks = res.tasks;
+                ajaxReload(res.tasks);
             })
     }
 })
 
 
-$('#btn-submit').click(function () {
+$(document).on('click', '#btn-submit', function () {
     // 作成
     if($('#exampleModal').hasClass('empty')) {
         $.ajax({
@@ -232,9 +242,8 @@ $('#btn-submit').click(function () {
 
             .done((res) => {
                 $('#exampleModal').modal('hide');
-                setTimeout('location.reload()', 1000);
-                // todo loadでリロードできなかった
-                // $('.list-group').load(`${Laravel.urls['index']} .list-group`);
+                Laravel.tasks = res.tasks;
+                ajaxReload(res.tasks);
             })
 
             .fail((xhr, textStatus, errorThrown) => {
@@ -268,8 +277,8 @@ $('#btn-submit').click(function () {
 
             .done((res) => {
                 $('#exampleModal').modal('hide');
-                setTimeout('location.reload()', 1000);
-                // $('.list-group').load(`${Laravel.urls['index']} `);
+                Laravel.tasks = res.tasks;
+                ajaxReload(res.tasks);
             })
 
             .fail((xhr, textStatus, errorThrown) => {
@@ -283,7 +292,7 @@ $('#btn-submit').click(function () {
 })
 
 
-$('#btn-delete').click(function () {
+$(document).on('click', '#btn-delete', function () {
     $.ajax({
         type: 'post',
         url: Laravel.urls['delete'],
@@ -293,8 +302,8 @@ $('#btn-delete').click(function () {
     })
 
         .done((res) => {
-            setTimeout('location.reload()', 1000);
-            // $('.list-group').load(`${Laravel.urls['index']} .list-group`);
+            Laravel.tasks = res.tasks;
+            ajaxReload(res.tasks);
         })
 
         .fail((error) => {
