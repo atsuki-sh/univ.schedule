@@ -54,6 +54,8 @@ class CourseController extends Controller
         $course->teacher = $request->teacher;
 
         $course->save();
+
+        return response()->json(['courses' => User::find($user_id)->courses]);
     }
 
     public function update($user_id, CourseRequest $request)
@@ -67,11 +69,15 @@ class CourseController extends Controller
             'teacher' => $request->teacher,
             'updated_at' => Carbon::now(),
         ]);
+
+        return response()->json(['courses' => User::find($user_id)->courses]);
     }
 
     public function delete($user_id, Request $request)
     {
         $course = User::find($user_id)->courses()->where('course_index', $request->course_index);
         $course->delete();
+
+        return response()->json(['courses' => User::find($user_id)->courses]);
     }
 }

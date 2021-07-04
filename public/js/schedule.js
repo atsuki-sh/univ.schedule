@@ -13,9 +13,13 @@ $.ajaxSetup({
 // todo ajaxでリロードする
 
 // course_indexの位置のtdに、titleを出力する
-for (const course of Laravel.courses) {
-    $(`#${course['course_index']}`).html(`<h5>${course['title']}</h5>`);
+function ajaxLoad(courses) {
+    for (const course of courses) {
+        $(`#${course['course_index']}`).html(`<h5>${course['title']}</h5>`);
+    }
 }
+
+ajaxLoad(Laravel.courses);
 
 // target_courseをグローバル変数として宣言
 let target_course;
@@ -27,7 +31,7 @@ $('td').click(function() {
 
     // 後で使えるよう、クリックされたtdのid(course_index)を保存しておく
     const $id = $(this).attr('id');
-    $('#input-title').attr('data-index', $id);
+    $('#input-title').data('index', $id);
 
     // クリックされたtdのデータをモーダルに埋め込む
     target_course = Laravel.courses.find(
@@ -73,7 +77,9 @@ $('#btn-submit').click(function() {
             // 通信に成功したとき
             .done((res)=>{
                 $('#exampleModal').modal('hide');
-                setTimeout('location.reload()', 1000);
+                $('.schedule').text('');
+                Laravel.courses = res.courses;
+                ajaxLoad(res.courses);
             })
             // 通信に失敗したとき
             .fail((xhr, textStatus, errorThrown)=>{
@@ -100,7 +106,10 @@ $('#btn-submit').click(function() {
             // 通信に成功したとき
             .done((res)=>{
                 $('#exampleModal').modal('hide');
-                setTimeout('location.reload()', 1000);
+                console.log(res.courses);
+                $('.schedule').text('');
+                Laravel.courses = res.courses;
+                ajaxLoad(res.courses);
             })
             // 通信に失敗したとき
             .fail((xhr, textStatus, errorThrown)=>{
@@ -124,7 +133,9 @@ $('#btn-delete').click(function() {
     })
         // 通信に成功したとき
         .done((res)=>{
-            setTimeout('location.reload()', 1000);
+            $('.schedule').text('');
+            Laravel.courses = res.courses;
+            ajaxLoad(res.courses);
         })
         // 通信に失敗したとき
         .fail((error)=>{

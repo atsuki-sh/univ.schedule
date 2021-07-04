@@ -48,11 +48,11 @@
         @for($i=1; $i<=25; $i+=5)
             <tr>
                 <th scope="row">{{ ($i-1) / 5 + 1}}</th>
-                <td id="{{ $i }}"></td>
-                <td id="{{ $i+1 }}"></td>
-                <td id="{{ $i+2 }}"></td>
-                <td id="{{ $i+3 }}"></td>
-                <td id="{{ $i+4 }}"></td>
+                <td class="schedule" id="{{ $i }}"></td>
+                <td class="schedule" id="{{ $i+1 }}"></td>
+                <td class="schedule" id="{{ $i+2 }}"></td>
+                <td class="schedule" id="{{ $i+3 }}"></td>
+                <td class="schedule" id="{{ $i+4 }}"></td>
             </tr>
         @endfor
         </tbody>
